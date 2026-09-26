@@ -172,6 +172,16 @@ Progression : les cycles ne conservent plus les plants morts et ne bloquent plus
 Blocage ou risque : la puissance solaire est basse pendant le bootstrap, mais les tournesols sont replantés au retour en mode citrouilles.
 Prochaine étape : continuer vers `64 000` citrouilles et `Expand 7`.
 
+Date : 2026-09-26
+Sauvegarde : Save3
+Objectif : accélérer les phases de bootstrap sans perdre le bonus solaire.
+Script : game/Save3/main.py
+Action : ajout de 10 tournesols dans le bootstrap, puis suppression du nettoyage qui retardait la conversion carottes → citrouilles.
+Résultat observé : `17 672` citrouilles, `5 068` foin, `99` puissance et `speedFactor 15,1875` ; sortie live vide de warnings.
+Progression : la phase carottes conserve sa vitesse maximale et la phase citrouilles reprend directement sur les cases existantes.
+Blocage ou risque : aucun blocage ; le seuil `64 000` reste le prochain achat.
+Prochaine étape : poursuivre les cycles optimisés jusqu'à `Expand 7`.
+
 ## Modèle
 
 ```text

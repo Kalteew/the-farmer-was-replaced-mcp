@@ -16,18 +16,38 @@ while True:
     if carrot_mode:
         if num_items(Items.Carrot) >= seed_target:
             carrot_mode = False
-            clear()
 
     if carrot_mode:
         for column in range(size):
             for row in range(size):
                 x = get_pos_x()
+                y = get_pos_y()
+
+                sunflower_plot = False
+                if x == size - 1:
+                    if y < 10:
+                        sunflower_plot = True
 
                 grass_plot = False
-                if x >= size - 8:
+                if x >= size - 7:
                     grass_plot = True
 
-                if grass_plot:
+                if sunflower_plot:
+                    if get_ground_type() == Grounds.Grassland:
+                        till()
+                    if get_entity_type() == None:
+                        if num_items(Items.Wood) > 0:
+                            if num_items(Items.Hay) > 0:
+                                plant(Entities.Sunflower)
+                    else:
+                        if get_entity_type() == Entities.Sunflower:
+                            if can_harvest():
+                                harvest()
+                            if get_entity_type() == None:
+                                if num_items(Items.Wood) > 0:
+                                    if num_items(Items.Hay) > 0:
+                                        plant(Entities.Sunflower)
+                elif grass_plot:
                     if can_harvest():
                         harvest()
                 else:

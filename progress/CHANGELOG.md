@@ -74,3 +74,5 @@
 - Cycle suivant validé : `14 848` citrouilles, avec retour automatique au bootstrap et aucune erreur live.
 - Corrigée la transition après méga-récolte : `clear()` est maintenant appelé avant le bootstrap, ce qui restaure les `96` cases d'herbe et évite l'épuisement du foin.
 - Nouveau cycle vérifié à `16 784` citrouilles, avec la ferme toujours active.
+- Bootstrap optimisé avec 10 tournesols conservés pendant la phase carottes ; la vitesse solaire reste à `15,1875`.
+- Suppression du `clear()` au mauvais moment lors du passage carottes → citrouilles ; nouvelle récolte vérifiée à `17 672` citrouilles, sans warning.
