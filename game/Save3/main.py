@@ -1,23 +1,124 @@
-# Ferme AFK adaptative : bootstrap de carottes puis carré de citrouilles.
+# Ferme AFK compacte : carottes, citrouilles, cactus, labyrinthes et dinosaures.
 size = get_world_size()
 pumpkin_side = 6
 if size < 7:
     pumpkin_side = size - 1
-seed_target = pumpkin_side * pumpkin_side
-pumpkin_cost = get_cost(Entities.Pumpkin)
-if pumpkin_cost != None:
-    for item in pumpkin_cost:
-        if item == Items.Carrot:
-            seed_target = seed_target * pumpkin_cost[item]
-seed_target = seed_target + size * size
-carrot_mode = False
-pumpkin_mode = False
+
+cactus_mode = False
 pumpkin_mature_passes = 0
-if num_items(Items.Carrot) < seed_target:
-    carrot_mode = True
-else:
-    pumpkin_mode = True
-clear()
+
+def go_to(target_x, target_y):
+    while get_pos_x() != target_x:
+        move(East)
+    while get_pos_y() != target_y:
+        move(South)
+
+def water():
+    if get_water() < 0.5:
+        if num_items(Items.Water) > 0:
+            use_item(Items.Water)
+
+def can_afford(cost):
+    if cost == None:
+        return False
+    for item in cost:
+        if num_items(item) < cost[item]:
+            return False
+    return True
+
+def plant_carrot():
+    if num_items(Items.Wood) > 0:
+        if num_items(Items.Hay) > 0:
+            plant(Entities.Carrot)
+
+def maintain_carrot():
+    entity = get_entity_type()
+    if entity == Entities.Carrot:
+        if can_harvest():
+            harvest()
+        if get_entity_type() == None:
+            plant_carrot()
+    else:
+        if can_harvest():
+            harvest()
+        if get_ground_type() == Grounds.Grassland:
+            till()
+        if get_entity_type() == None:
+            plant_carrot()
+    water()
+
+def maintain_tree():
+    entity = get_entity_type()
+    if entity == None:
+        if get_ground_type() == Grounds.Grassland:
+            till()
+        if num_items(Items.Wood) > 0:
+            if num_items(Items.Hay) > 0:
+                plant(Entities.Tree)
+    elif entity == Entities.Tree:
+        if num_items(Items.Fertilizer) > 0:
+            use_item(Items.Fertilizer)
+        if can_harvest():
+            harvest()
+        if get_entity_type() == None:
+            if num_items(Items.Wood) > 0:
+                if num_items(Items.Hay) > 0:
+                    plant(Entities.Tree)
+    else:
+        if can_harvest():
+            harvest()
+        if get_ground_type() == Grounds.Grassland:
+            till()
+        if get_entity_type() == None:
+            if num_items(Items.Wood) > 0:
+                if num_items(Items.Hay) > 0:
+                    plant(Entities.Tree)
+    water()
+
+def maintain_sunflower():
+    if get_ground_type() == Grounds.Grassland:
+        till()
+    if get_entity_type() == None:
+        if can_afford(get_cost(Entities.Sunflower)):
+            plant(Entities.Sunflower)
+    elif get_entity_type() == Entities.Sunflower:
+        if can_harvest():
+            harvest()
+        if get_entity_type() == None:
+            if can_afford(get_cost(Entities.Sunflower)):
+                plant(Entities.Sunflower)
+    water()
+
+def tree_slot(x, y):
+    if y % 2 != 0:
+        return False
+    if x == size - 2:
+        return True
+    if x == size - 4:
+        return True
+    if x == size - 6:
+        return True
+    return False
+
+def farm_carrot_column(column, start_y):
+    for cycle in range(3):
+        for target_y in range(start_y, size):
+            go_to(column, target_y)
+            maintain_carrot()
+            move(North)
+
+def spawn_carrot_workers(start_y):
+    workers = []
+    for column in range(3):
+        worker = spawn_drone(farm_carrot_column, column, start_y)
+        if worker == None:
+            break
+        workers.append(worker)
+    return workers
+
+def wait_workers(workers):
+    for worker in workers:
+        wait_for(worker)
 
 def solve_maze():
     directions = [North, East, South, West]
@@ -30,7 +131,6 @@ def solve_maze():
         if get_entity_type() == Entities.Treasure:
             harvest()
             return
-
         right = (facing + 1) % 4
         if move(directions[right]):
             facing = right
@@ -48,131 +148,27 @@ def solve_maze():
         harvest()
 
 def run_maze():
-    maze_amount = get_world_size()
-    maze_level = num_unlocked(Unlocks.Mazes)
-    for level in range(maze_level - 1):
-        maze_amount = maze_amount * 2
-
-    if num_items(Items.Weird_Substance) < maze_amount:
+    amount = get_world_size()
+    level = num_unlocked(Unlocks.Mazes)
+    for step in range(level - 1):
+        amount = amount * 2
+    if num_items(Items.Weird_Substance) < amount:
         return
 
     entity = get_entity_type()
     if entity == Entities.Hedge or entity == Entities.Treasure:
         solve_maze()
         return
-
     if entity != None:
         if can_harvest():
             harvest()
         if get_ground_type() == Grounds.Grassland:
             till()
-
     if get_entity_type() == None:
         plant(Entities.Bush)
-
     if get_entity_type() == Entities.Bush:
-        use_item(Items.Weird_Substance, maze_amount)
+        use_item(Items.Weird_Substance, amount)
         solve_maze()
-
-def go_to(target_x, target_y):
-    while get_pos_x() != target_x:
-        move(East)
-    while get_pos_y() != target_y:
-        move(South)
-
-def maintain_tree_column(tree_column):
-    size = get_world_size()
-    target_x = size - 2 - tree_column * 2
-    for target_y in range(0, size, 2):
-        go_to(target_x, target_y)
-        entity = get_entity_type()
-        if entity == None:
-            if get_ground_type() == Grounds.Grassland:
-                till()
-            if num_items(Items.Wood) > 0:
-                if num_items(Items.Hay) > 0:
-                    plant(Entities.Tree)
-        elif entity == Entities.Tree:
-            if num_items(Items.Fertilizer) > 0:
-                use_item(Items.Fertilizer)
-            if can_harvest():
-                harvest()
-            if get_entity_type() == None:
-                if num_items(Items.Wood) > 0:
-                    if num_items(Items.Hay) > 0:
-                        plant(Entities.Tree)
-        else:
-            if can_harvest():
-                harvest()
-            if get_ground_type() == Grounds.Grassland:
-                till()
-            if get_entity_type() == None:
-                if num_items(Items.Wood) > 0:
-                    if num_items(Items.Hay) > 0:
-                        plant(Entities.Tree)
-
-def maintain_carrot_column(carrot_column):
-    size = get_world_size()
-    go_to(carrot_column, 0)
-    for target_y in range(size):
-        entity = get_entity_type()
-        if entity == None:
-            if get_ground_type() == Grounds.Grassland:
-                till()
-            if num_items(Items.Wood) > 0:
-                if num_items(Items.Hay) > 0:
-                    plant(Entities.Carrot)
-        elif entity == Entities.Carrot:
-            if can_harvest():
-                harvest()
-            if get_entity_type() == None:
-                if num_items(Items.Wood) > 0:
-                    if num_items(Items.Hay) > 0:
-                        plant(Entities.Carrot)
-        else:
-            if can_harvest():
-                harvest()
-            if get_ground_type() == Grounds.Grassland:
-                till()
-            if get_entity_type() == None:
-                if num_items(Items.Wood) > 0:
-                    if num_items(Items.Hay) > 0:
-                        plant(Entities.Carrot)
-
-        if get_water() < 0.5:
-            if num_items(Items.Water) > 0:
-                use_item(Items.Water)
-        move(North)
-
-cactus_mode = False
-
-def can_afford(cost):
-    if cost == None:
-        return False
-    for item in cost:
-        if num_items(item) < cost[item]:
-            return False
-    return True
-
-def cactus_inputs_missing():
-    cost = get_cost(Entities.Cactus)
-    if cost == None:
-        return False
-    return not can_afford(cost)
-
-def needs_cactus():
-    if num_unlocked(Unlocks.Cactus) <= 1:
-        return False
-
-    cost = get_cost(Unlocks.Mazes)
-    if cost == None:
-        return False
-
-    for item in cost:
-        if item == Items.Cactus:
-            if num_items(Items.Cactus) < cost[item]:
-                return True
-    return False
 
 def needs_gold():
     for unlock in [Unlocks.Simulation, Unlocks.Megafarm]:
@@ -199,23 +195,18 @@ def run_dinosaur():
         return
     if not needs_bones():
         return
-
-    size = get_world_size()
     if num_items(Items.Cactus) < size * 4:
         return
 
     clear()
     go_to(0, 0)
     change_hat(Hats.Dinosaur_Hat)
-
     target_x = get_pos_x()
     target_y = get_pos_y()
+
     for step in range(size * size * 4):
         if get_entity_type() == Entities.Apple:
-            next_x, next_y = measure()
-            target_x = next_x
-            target_y = next_y
-
+            target_x, target_y = measure()
         moved = False
         current_x = get_pos_x()
         current_y = get_pos_y()
@@ -235,17 +226,14 @@ def run_dinosaur():
             if can_move(South):
                 move(South)
                 moved = True
-
         if not moved:
             for direction in [North, East, South, West]:
                 if can_move(direction):
                     move(direction)
                     moved = True
                     break
-
         if not moved:
             break
-
     change_hat(Hats.Gold_Hat)
 
 def sort_cactus(side):
@@ -258,7 +246,6 @@ def sort_cactus(side):
                 east = measure()
                 if west > east:
                     swap(West)
-
     for column in range(side):
         for pass_index in range(side):
             go_to(column, 0)
@@ -270,25 +257,14 @@ def sort_cactus(side):
                     swap(South)
 
 def run_cactus_phase():
-    size = get_world_size()
-    cactus_side = size - 1
+    side = size - 1
     cactus_ready = True
-
     for column in range(size):
         for row in range(size):
             x = get_pos_x()
             y = get_pos_y()
-
-            cactus_plot = False
-            if x < cactus_side:
-                if y < cactus_side:
-                    cactus_plot = True
-
-            sunflower_plot = False
-            if x == size - 1:
-                if y < 10:
-                    sunflower_plot = True
-
+            cactus_plot = x < side and y < side
+            sunflower_plot = x == size - 1 and y < 10
             if cactus_plot:
                 entity = get_entity_type()
                 if entity == Entities.Cactus:
@@ -305,363 +281,176 @@ def run_cactus_phase():
                     if get_entity_type() != Entities.Cactus:
                         cactus_ready = False
             elif sunflower_plot:
-                if get_ground_type() == Grounds.Grassland:
-                    till()
-                if get_entity_type() == None:
-                    if can_afford(get_cost(Entities.Sunflower)):
-                        plant(Entities.Sunflower)
-                else:
-                    if get_entity_type() == Entities.Sunflower:
-                        if can_harvest():
-                            harvest()
-                        if get_entity_type() == None:
-                            if can_afford(get_cost(Entities.Sunflower)):
-                                plant(Entities.Sunflower)
+                maintain_sunflower()
             else:
                 if can_harvest():
                     harvest()
-
-            if get_water() < 0.5:
-                if num_items(Items.Water) > 0:
-                    use_item(Items.Water)
+            water()
             move(North)
         move(East)
 
     if cactus_ready:
-        sort_cactus(cactus_side)
+        sort_cactus(side)
         go_to(0, 0)
         if can_harvest():
             harvest()
         clear()
-
-    maze_cost = get_cost(Unlocks.Mazes)
-    cactus_reserve_ready = False
-    if maze_cost != None:
-        for item in maze_cost:
-            if item == Items.Cactus:
-                if num_items(Items.Cactus) >= maze_cost[item] + size * 4:
-                    cactus_reserve_ready = True
-    if needs_bones() and cactus_reserve_ready:
-        run_dinosaur()
-        return
+        maze_cost = get_cost(Unlocks.Mazes)
+        if maze_cost != None:
+            for item in maze_cost:
+                if item == Items.Cactus:
+                    if needs_bones():
+                        if num_items(Items.Cactus) >= maze_cost[item] + size * 4:
+                            run_dinosaur()
+                            return
 
     go_to(size - 1, size - 1)
-    if num_unlocked(Unlocks.Mazes) > 0 and needs_gold():
-        run_maze()
+    if num_unlocked(Unlocks.Mazes) > 0:
+        if needs_gold():
+            run_maze()
+
+def pumpkin_ready_cell():
+    entity = get_entity_type()
+    if entity == Entities.Dead_Pumpkin:
+        harvest()
+        if num_items(Items.Carrot) > 0:
+            plant(Entities.Pumpkin)
+        return False
+    if entity == None:
+        if get_ground_type() == Grounds.Grassland:
+            till()
+        if num_items(Items.Carrot) > 0:
+            plant(Entities.Pumpkin)
+        return False
+    if entity == Entities.Pumpkin:
+        return can_harvest()
+    if can_harvest():
+        harvest()
+    if get_ground_type() == Grounds.Grassland:
+        till()
+    if get_entity_type() == None:
+        if num_items(Items.Carrot) > 0:
+            plant(Entities.Pumpkin)
+    return False
+
+def carrot_target():
+    target = pumpkin_side * pumpkin_side
+    cost = get_cost(Entities.Pumpkin)
+    if cost != None:
+        for item in cost:
+            if item == Items.Carrot:
+                target = target * cost[item]
+    return target + size * size
+
+def needs_cactus():
+    if num_unlocked(Unlocks.Cactus) <= 1:
+        return False
+    cost = get_cost(Unlocks.Mazes)
+    if cost == None:
+        return False
+    for item in cost:
+        if item == Items.Cactus:
+            if num_items(Items.Cactus) < cost[item]:
+                return True
+    return False
+
+def cactus_inputs_missing():
+    cost = get_cost(Entities.Cactus)
+    if cost == None:
+        return False
+    return not can_afford(cost)
+
+def run_carrot_cycle():
+    workers = spawn_carrot_workers(0)
+    for column in range(size):
+        for row in range(size):
+            x = get_pos_x()
+            y = get_pos_y()
+            delegated = x < 3
+            if not delegated:
+                if x == size - 1 and y < 10:
+                    maintain_sunflower()
+                elif tree_slot(x, y):
+                    maintain_tree()
+                else:
+                    maintain_carrot()
+            move(North)
+        move(East)
+    wait_workers(workers)
+
+def run_pumpkin_cycle():
+    global pumpkin_mature_passes
+    workers = spawn_carrot_workers(6)
+    pumpkin_ready = True
+    pumpkin_count = 0
+
+    for column in range(size):
+        for row in range(size):
+            x = get_pos_x()
+            y = get_pos_y()
+            delegated = x < 3 and y >= 6
+            pumpkin_plot = x < pumpkin_side and y < pumpkin_side
+            maze_plot = x == size - 1 and y == size - 1
+            if delegated:
+                pass
+            elif maze_plot and num_unlocked(Unlocks.Mazes) > 0 and needs_gold():
+                run_maze()
+            elif pumpkin_plot:
+                if not pumpkin_ready_cell():
+                    pumpkin_ready = False
+                else:
+                    pumpkin_count = pumpkin_count + 1
+            elif tree_slot(x, y):
+                maintain_tree()
+            elif x == size - 1 and y < 10:
+                maintain_sunflower()
+            elif x < pumpkin_side:
+                maintain_carrot()
+            else:
+                if can_harvest():
+                    harvest()
+            water()
+            move(North)
+        move(East)
+
+    if pumpkin_count < pumpkin_side * pumpkin_side:
+        pumpkin_ready = False
+    if pumpkin_ready:
+        pumpkin_mature_passes = pumpkin_mature_passes + 1
+    else:
+        pumpkin_mature_passes = 0
+
+    if pumpkin_mature_passes >= 2:
+        before = num_items(Items.Pumpkin)
+        for column in range(size):
+            for row in range(size):
+                if get_pos_x() < pumpkin_side and get_pos_y() < pumpkin_side:
+                    if can_harvest():
+                        harvest()
+                move(North)
+            move(East)
+        if num_items(Items.Pumpkin) > before:
+            pumpkin_mature_passes = 0
+    wait_workers(workers)
 
 while True:
-    size = get_world_size()
-    pumpkin_side = 6
-    if size < 7:
-        pumpkin_side = size - 1
-    seed_target = pumpkin_side * pumpkin_side
-    pumpkin_cost = get_cost(Entities.Pumpkin)
-    if pumpkin_cost != None:
-        for item in pumpkin_cost:
-            if item == Items.Carrot:
-                seed_target = seed_target * pumpkin_cost[item]
-    seed_target = seed_target + size * size
-
     cactus_needed = needs_cactus()
     if cactus_inputs_missing():
         cactus_needed = False
-    if cactus_needed and not cactus_mode:
-        cactus_mode = True
-        pumpkin_mode = False
-        pumpkin_mature_passes = 0
-        clear()
-    elif not cactus_needed and cactus_mode:
-        cactus_mode = False
-        carrot_mode = True
-        pumpkin_mode = False
-        pumpkin_mature_passes = 0
-        clear()
 
-    if cactus_mode:
+    if cactus_needed:
+        if not cactus_mode:
+            cactus_mode = True
+            pumpkin_mature_passes = 0
+            clear()
         run_cactus_phase()
         continue
 
-    if carrot_mode:
-        if num_items(Items.Carrot) >= seed_target:
-            carrot_mode = False
-            pumpkin_mode = True
+    if cactus_mode:
+        cactus_mode = False
+        pumpkin_mature_passes = 0
 
-    if not carrot_mode and not pumpkin_mode:
-        if num_items(Items.Carrot) < seed_target:
-            carrot_mode = True
-            clear()
-            continue
-        pumpkin_mode = True
-
-    carrot_drones = []
-    carrot_workers = 0
-
-    if carrot_mode:
-        if num_unlocked(Unlocks.Megafarm) > 0:
-            for carrot_column in range(3):
-                carrot_drone = spawn_drone(maintain_carrot_column, carrot_column)
-                if carrot_drone == None:
-                    break
-                carrot_drones.append(carrot_drone)
-                carrot_workers = carrot_workers + 1
-
-        for column in range(size):
-            for row in range(size):
-                x = get_pos_x()
-                y = get_pos_y()
-
-                maze_plot = False
-                if x == size - 1:
-                    if y == size - 1:
-                        maze_plot = True
-
-                sunflower_plot = False
-                if x == size - 1:
-                    if y < 10:
-                        sunflower_plot = True
-
-                delegated_carrot_plot = False
-                if x < carrot_workers:
-                    delegated_carrot_plot = True
-
-                tree_plot = False
-                tree_column = -1
-                if x == size - 2:
-                    tree_column = 0
-                elif x == size - 4:
-                    tree_column = 1
-                elif x == size - 6:
-                    tree_column = 2
-                if tree_column >= 0:
-                    if y % 2 == 0:
-                        tree_plot = True
-
-                grass_plot = False
-                if x >= size - 7:
-                    grass_plot = True
-
-                if delegated_carrot_plot:
-                    pass
-                elif sunflower_plot:
-                    if get_ground_type() == Grounds.Grassland:
-                        till()
-                    if get_entity_type() == None:
-                        if can_afford(get_cost(Entities.Sunflower)):
-                            plant(Entities.Sunflower)
-                    else:
-                        if get_entity_type() == Entities.Sunflower:
-                            if can_harvest():
-                                harvest()
-                            if get_entity_type() == None:
-                                if can_afford(get_cost(Entities.Sunflower)):
-                                    plant(Entities.Sunflower)
-                elif tree_plot:
-                    entity = get_entity_type()
-                    if entity == None:
-                        if get_ground_type() == Grounds.Grassland:
-                            till()
-                        if num_items(Items.Wood) > 0:
-                            if num_items(Items.Hay) > 0:
-                                plant(Entities.Tree)
-                    elif entity == Entities.Tree:
-                        if num_items(Items.Fertilizer) > 0:
-                            use_item(Items.Fertilizer)
-                        if can_harvest():
-                            harvest()
-                        if get_entity_type() == None:
-                            if num_items(Items.Wood) > 0:
-                                if num_items(Items.Hay) > 0:
-                                    plant(Entities.Tree)
-                    else:
-                        if can_harvest():
-                            harvest()
-                        if get_ground_type() == Grounds.Grassland:
-                            till()
-                        if get_entity_type() == None:
-                            if num_items(Items.Wood) > 0:
-                                if num_items(Items.Hay) > 0:
-                                    plant(Entities.Tree)
-                elif grass_plot:
-                    if can_harvest():
-                        harvest()
-                else:
-                    if can_harvest():
-                        harvest()
-                    if get_ground_type() == Grounds.Grassland:
-                        till()
-                    if get_entity_type() == None:
-                        if num_items(Items.Wood) > 0:
-                            if num_items(Items.Hay) > 0:
-                                plant(Entities.Carrot)
-
-                if get_water() < 0.5:
-                    if num_items(Items.Water) > 0:
-                        use_item(Items.Water)
-                move(North)
-            move(East)
-
-        for carrot_drone in carrot_drones:
-            wait_for(carrot_drone)
+    if num_items(Items.Carrot) < carrot_target():
+        run_carrot_cycle()
     else:
-        pumpkin_ready = True
-        pumpkin_count = 0
-
-        for column in range(size):
-            for row in range(size):
-                x = get_pos_x()
-                y = get_pos_y()
-
-                maze_plot = False
-                if x == size - 1:
-                    if y == size - 1:
-                        maze_plot = True
-
-                pumpkin_plot = False
-                if x < pumpkin_side:
-                    if y < pumpkin_side:
-                        pumpkin_plot = True
-
-                sunflower_plot = False
-                if x == size - 1:
-                    if y < 10:
-                        sunflower_plot = True
-
-                tree_plot = False
-                tree_column = -1
-                if x == size - 2:
-                    tree_column = 0
-                elif x == size - 4:
-                    tree_column = 1
-                elif x == size - 6:
-                    tree_column = 2
-                if tree_column >= 0:
-                    if y % 2 == 0:
-                        tree_plot = True
-
-                grass_plot = False
-                if x >= pumpkin_side:
-                    grass_plot = True
-
-                if maze_plot and num_unlocked(Unlocks.Mazes) > 0 and needs_gold() and num_unlocked(Unlocks.Cactus) > 1:
-                    run_maze()
-                elif pumpkin_plot:
-                    entity = get_entity_type()
-                    if entity == Entities.Dead_Pumpkin:
-                        harvest()
-                        if num_items(Items.Carrot) > 0:
-                            plant(Entities.Pumpkin)
-                            pumpkin_ready = False
-                        else:
-                            pumpkin_ready = False
-                    else:
-                        if entity == None:
-                            if get_ground_type() == Grounds.Grassland:
-                                till()
-                            if num_items(Items.Carrot) > 0:
-                                plant(Entities.Pumpkin)
-                                pumpkin_ready = False
-                            else:
-                                pumpkin_ready = False
-                        else:
-                            if entity == Entities.Pumpkin:
-                                pumpkin_count = pumpkin_count + 1
-                                if not can_harvest():
-                                    pumpkin_ready = False
-                            else:
-                                if can_harvest():
-                                    harvest()
-                                if get_ground_type() == Grounds.Grassland:
-                                    till()
-                                if get_entity_type() == None:
-                                    if num_items(Items.Carrot) > 0:
-                                        plant(Entities.Pumpkin)
-                                        pumpkin_ready = False
-                                    else:
-                                        pumpkin_ready = False
-                                else:
-                                    pumpkin_ready = False
-                elif tree_plot:
-                    entity = get_entity_type()
-                    if entity == None:
-                        if get_ground_type() == Grounds.Grassland:
-                            till()
-                        if num_items(Items.Wood) > 0:
-                            if num_items(Items.Hay) > 0:
-                                plant(Entities.Tree)
-                    elif entity == Entities.Tree:
-                        if num_items(Items.Fertilizer) > 0:
-                            use_item(Items.Fertilizer)
-                        if can_harvest():
-                            harvest()
-                        if get_entity_type() == None:
-                            if num_items(Items.Wood) > 0:
-                                if num_items(Items.Hay) > 0:
-                                    plant(Entities.Tree)
-                    else:
-                        if can_harvest():
-                            harvest()
-                        if get_ground_type() == Grounds.Grassland:
-                            till()
-                        if get_entity_type() == None:
-                            if num_items(Items.Wood) > 0:
-                                if num_items(Items.Hay) > 0:
-                                    plant(Entities.Tree)
-                elif sunflower_plot:
-                    if get_ground_type() == Grounds.Grassland:
-                        till()
-                    if get_entity_type() == None:
-                        if can_afford(get_cost(Entities.Sunflower)):
-                            plant(Entities.Sunflower)
-                    else:
-                        if get_entity_type() == Entities.Sunflower:
-                            if can_harvest():
-                                harvest()
-                            if get_entity_type() == None:
-                                if can_afford(get_cost(Entities.Sunflower)):
-                                    plant(Entities.Sunflower)
-                elif grass_plot:
-                    if can_harvest():
-                        harvest()
-                else:
-                    if can_harvest():
-                        harvest()
-                    if get_ground_type() == Grounds.Grassland:
-                        till()
-                    if get_entity_type() == None:
-                        if num_items(Items.Wood) > 0:
-                            if num_items(Items.Hay) > 0:
-                                plant(Entities.Carrot)
-
-                if get_water() < 0.5:
-                    if num_items(Items.Water) > 0:
-                        use_item(Items.Water)
-                move(North)
-            move(East)
-
-        if pumpkin_count < pumpkin_side * pumpkin_side:
-            pumpkin_ready = False
-
-        if pumpkin_ready:
-            pumpkin_mature_passes = pumpkin_mature_passes + 1
-        else:
-            pumpkin_mature_passes = 0
-
-        if pumpkin_mature_passes >= 2:
-            pumpkin_before_harvest = num_items(Items.Pumpkin)
-            for column in range(size):
-                for row in range(size):
-                    x = get_pos_x()
-                    y = get_pos_y()
-                    if x < pumpkin_side:
-                        if y < pumpkin_side:
-                            if can_harvest():
-                                harvest()
-                move(North)
-            move(East)
-            if num_items(Items.Pumpkin) > pumpkin_before_harvest:
-                carrot_mode = True
-                pumpkin_mode = False
-                pumpkin_mature_passes = 0
-                clear()
-            else:
-                pumpkin_mature_passes = 0
+        run_pumpkin_cycle()
