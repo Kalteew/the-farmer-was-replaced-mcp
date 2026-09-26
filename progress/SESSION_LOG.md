@@ -112,6 +112,16 @@ Progression : le palier d'expansion est maintenant proche et l'automatisation pe
 Blocage ou risque : le cycle de croissance suivant peut varier selon les citrouilles mortes ; leur remplacement est automatique.
 Prochaine étape : acheter `Expand 6`, puis vérifier le passage automatique du carré à 8×8.
 
+Date : 2026-09-26
+Sauvegarde : Save3
+Objectif : franchir `Expand 6` et reprendre la production sur la nouvelle grille.
+Script : game/Save3/main.py
+Action : achat MCP de `Expand` niveau 6 après dépassement de `8 000` citrouilles, puis lecture live de la grille.
+Résultat observé : grille `12×12`, stock restant de `720` citrouilles, `2 017` eau et `3 043` puissance ; le drone bouge et le script remplit le nouveau carré.
+Progression : la ferme dynamique est maintenant dimensionnée en `10×10` citrouilles, avec tournesols, herbe et carottes sur la bordure.
+Blocage ou risque : le premier cycle de croissance de la nouvelle zone est encore en cours ; aucun arrêt ni erreur observé.
+Prochaine étape : attendre la première méga-récolte 10×10 et lire le prochain coût réel de l'arbre.
+
 ## Modèle
 
 ```text

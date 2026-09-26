@@ -59,3 +59,5 @@
 - Nouvelle récolte observée à `3 536` citrouilles, avec le bonus solaire toujours actif.
 - Acheté `Watering` niveau 6 pour `51 200` bois ; la production d'eau reste confortable.
 - Nouvelle méga-récolte observée à `5 264` citrouilles ; il reste `2 736` citrouilles avant `Expand 6`.
+- Acheté `Expand` niveau 6 à `8 000` citrouilles ; la grille live est passée de 8×8 à 12×12.
+- Vérifié que le script dynamique repart sur un carré 10×10 après l'expansion.
