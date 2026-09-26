@@ -71,3 +71,4 @@
 - Carré optimisé en `taille de grille - 1` : `11×11` citrouilles sur la grille 12×12, avec une seule colonne de bordure et bonus solaire conservé.
 - Nouvelle méga-récolte vérifiée à `11 304` citrouilles.
 - Cycle adaptatif suivant validé : `13 056` citrouilles, puis retour automatique au bootstrap de carottes sans warning.
+- Cycle suivant validé : `14 848` citrouilles, avec retour automatique au bootstrap et aucune erreur live.

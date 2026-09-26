@@ -152,6 +152,16 @@ Progression : la ferme poursuit seule les cycles nécessaires vers `64 000` citr
 Blocage ou risque : aucun achat disponible pour le moment ; `Pumpkins` et `Expand` coûtent chacun `64 000` dans le catalogue live.
 Prochaine étape : laisser les cycles adaptatifs s'enchaîner jusqu'au prochain achat.
 
+Date : 2026-09-26
+Sauvegarde : Save3
+Objectif : continuer l'accumulation vers `Expand 7`.
+Script : game/Save3/main.py
+Action : surveillance du cycle suivant sans modification de script ni dépense hors priorité.
+Résultat observé : `14 848` citrouilles, drone actif, vitesse solaire maintenue et aucune erreur live.
+Progression : la bascule bootstrap/citrouilles reste stable ; le seuil de `64 000` est le prochain achat utile.
+Blocage ou risque : aucun blocage, seulement un cycle de croissance long sur la grille 12×12.
+Prochaine étape : poursuivre l'AFK jusqu'à `Expand 7`.
+
 ## Modèle
 
 ```text
