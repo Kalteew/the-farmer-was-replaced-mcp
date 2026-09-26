@@ -50,6 +50,8 @@ while True:
                 elif grass_plot:
                     if can_harvest():
                         harvest()
+                    elif num_items(Items.Fertilizer) > 0:
+                        use_item(Items.Fertilizer)
                 else:
                     if can_harvest():
                         harvest()
@@ -136,6 +138,8 @@ while True:
                 elif grass_plot:
                     if can_harvest():
                         harvest()
+                    elif num_items(Items.Fertilizer) > 0:
+                        use_item(Items.Fertilizer)
                 else:
                     if can_harvest():
                         harvest()

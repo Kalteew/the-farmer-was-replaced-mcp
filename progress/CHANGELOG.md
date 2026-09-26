@@ -79,3 +79,10 @@
 - Cycle suivant confirmé à `18 120` citrouilles avec la puissance solaire stable et la sortie live vide.
 - Cycle supplémentaire confirmé à `18 328` citrouilles ; vitesse solaire et boucle adaptative toujours actives.
 - Stock live porté à `18 816` citrouilles pendant un cycle long, sans erreur ni arrêt.
+
+## 2026-09-26 — branche recherche et substance étrange
+
+- Débloqué via MCP `Lists`, `Dictionaries`, `Costs`, `Auto_Unlock`, `Polyculture` niveau 1, `Cactus` niveau 1, `Debug`, puis `Fertilizer` niveau 4.
+- Mesuré un run borné de 20 secondes : environ `59,84` carottes/min et `257,31` foin/min ; le MCP a correctement signalé l'arrêt de mesure et le script a été relancé par raccourci fiable.
+- Ajouté la fertilisation ciblée des cases d'herbe uniquement, afin de générer de la substance étrange sans réduire le rendement des carottes et citrouilles.
+- Débloqué `Timing` dès que le premier millier de citrouilles a été reconstitué ; le script reste actif, sans sortie d'erreur.

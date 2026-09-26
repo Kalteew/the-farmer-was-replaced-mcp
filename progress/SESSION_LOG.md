@@ -212,6 +212,16 @@ Progression : la ferme reste stable pendant les cycles longs de croissance.
 Blocage ou risque : aucun blocage ; les coûts live restent à `64 000` citrouilles/carottes pour les prochains paliers.
 Prochaine étape : poursuivre automatiquement jusqu'à l'achat d'`Expand 7`.
 
+Date : 2026-09-26
+Sauvegarde : Save3
+Objectif : ouvrir les branches de recherche qui accélèrent la fin de partie sans casser la ferme AFK.
+Script : game/Save3/main.py
+Action : déblocages MCP `Lists`, `Dictionaries`, `Costs`, `Auto_Unlock`, `Polyculture`, `Cactus`, `Debug`, `Fertilizer` niveau 4 et `Timing` ; ajout de fertilisation limitée à l'herbe.
+Résultat observé : `10 283` foin, `50 615` bois, `757` carottes, `136` citrouilles, `220` fertilisants, `716` puissance ; simulation active et sortie live vide.
+Progression : le bootstrap a repris après l'achat de Timing ; le prochain petit achat est `Utilities` à `1 000` citrouilles, tandis que `Expand 7` reste à `64 000` citrouilles.
+Blocage ou risque : aucun blocage ; la mesure MCP arrête volontairement le script, donc chaque mesure doit être suivie d'une relance et d'une vérification.
+Prochaine étape : accumuler la substance étrange avec l'herbe fertilisée, puis ouvrir `Mazes` dès que le seuil réel est atteint.
+
 ## Modèle
 
 ```text
