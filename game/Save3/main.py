@@ -99,6 +99,39 @@ def maintain_tree_column(tree_column):
                     if num_items(Items.Hay) > 0:
                         plant(Entities.Tree)
 
+def maintain_carrot_column(carrot_column):
+    size = get_world_size()
+    go_to(carrot_column, 0)
+    for target_y in range(size):
+        entity = get_entity_type()
+        if entity == None:
+            if get_ground_type() == Grounds.Grassland:
+                till()
+            if num_items(Items.Wood) > 0:
+                if num_items(Items.Hay) > 0:
+                    plant(Entities.Carrot)
+        elif entity == Entities.Carrot:
+            if can_harvest():
+                harvest()
+            if get_entity_type() == None:
+                if num_items(Items.Wood) > 0:
+                    if num_items(Items.Hay) > 0:
+                        plant(Entities.Carrot)
+        else:
+            if can_harvest():
+                harvest()
+            if get_ground_type() == Grounds.Grassland:
+                till()
+            if get_entity_type() == None:
+                if num_items(Items.Wood) > 0:
+                    if num_items(Items.Hay) > 0:
+                        plant(Entities.Carrot)
+
+        if get_water() < 0.5:
+            if num_items(Items.Water) > 0:
+                use_item(Items.Water)
+        move(North)
+
 cactus_mode = False
 
 def can_afford(cost):
@@ -252,17 +285,17 @@ while True:
             clear()
             continue
 
-    tree_drones = []
-    tree_workers = 0
+    carrot_drones = []
+    carrot_workers = 0
 
     if carrot_mode:
         if num_unlocked(Unlocks.Megafarm) > 0:
-            for tree_column in range(3):
-                tree_drone = spawn_drone(maintain_tree_column, tree_column)
-                if tree_drone == None:
+            for carrot_column in range(3):
+                carrot_drone = spawn_drone(maintain_carrot_column, carrot_column)
+                if carrot_drone == None:
                     break
-                tree_drones.append(tree_drone)
-                tree_workers = tree_workers + 1
+                carrot_drones.append(carrot_drone)
+                carrot_workers = carrot_workers + 1
 
         for column in range(size):
             for row in range(size):
@@ -279,6 +312,10 @@ while True:
                     if y < 10:
                         sunflower_plot = True
 
+                delegated_carrot_plot = False
+                if x < carrot_workers:
+                    delegated_carrot_plot = True
+
                 tree_plot = False
                 tree_column = -1
                 if x == size - 2:
@@ -287,7 +324,7 @@ while True:
                     tree_column = 1
                 elif x == size - 6:
                     tree_column = 2
-                if tree_column >= tree_workers:
+                if tree_column >= 0:
                     if y % 2 == 0:
                         tree_plot = True
 
@@ -295,8 +332,8 @@ while True:
                 if x >= size - 7:
                     grass_plot = True
 
-                if maze_plot and num_unlocked(Unlocks.Mazes) > 0 and needs_gold():
-                    run_maze()
+                if delegated_carrot_plot:
+                    pass
                 elif sunflower_plot:
                     if get_ground_type() == Grounds.Grassland:
                         till()
@@ -355,8 +392,8 @@ while True:
                 move(North)
             move(East)
 
-        for tree_drone in tree_drones:
-            wait_for(tree_drone)
+        for carrot_drone in carrot_drones:
+            wait_for(carrot_drone)
     else:
         pumpkin_ready = True
 
