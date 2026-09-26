@@ -76,3 +76,4 @@
 - Nouveau cycle vérifié à `16 784` citrouilles, avec la ferme toujours active.
 - Bootstrap optimisé avec 10 tournesols conservés pendant la phase carottes ; la vitesse solaire reste à `15,1875`.
 - Suppression du `clear()` au mauvais moment lors du passage carottes → citrouilles ; nouvelle récolte vérifiée à `17 672` citrouilles, sans warning.
+- Cycle suivant confirmé à `18 120` citrouilles avec la puissance solaire stable et la sortie live vide.

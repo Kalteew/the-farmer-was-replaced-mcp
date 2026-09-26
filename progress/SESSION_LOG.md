@@ -182,6 +182,16 @@ Progression : la phase carottes conserve sa vitesse maximale et la phase citroui
 Blocage ou risque : aucun blocage ; le seuil `64 000` reste le prochain achat.
 Prochaine étape : poursuivre les cycles optimisés jusqu'à `Expand 7`.
 
+Date : 2026-09-26
+Sauvegarde : Save3
+Objectif : continuer la production optimisée vers `Expand 7`.
+Script : game/Save3/main.py
+Action : vérification d'un cycle supplémentaire avec tournesols conservés pendant le bootstrap.
+Résultat observé : `18 120` citrouilles, `6 202` foin, `285` puissance et `speedFactor 15,1875`, sans warning.
+Progression : le rendement et la vitesse restent stables après la dernière correction de transition.
+Blocage ou risque : aucun achat disponible avant `64 000` citrouilles.
+Prochaine étape : poursuivre l'AFK et acheter `Expand 7` dès le seuil atteint.
+
 ## Modèle
 
 ```text
