@@ -18,14 +18,15 @@
 ## Phase 2 — Début de progression
 
 - [x] Automatiser une récolte bornée adaptée au terrain actuel.
-- [ ] Débloquer les premières constructions de langage.
-- [ ] Débloquer mouvement et sens.
-- [ ] Mettre en place un balayage de grille robuste.
+- [x] Débloquer les premières constructions de langage.
+- [x] Débloquer mouvement, sens et variables.
+- [x] Mettre en place un balayage de grille robuste avec wrap sur les deux axes.
 
 ## Phase 3 — Ferme fiable
 
-- [ ] Gérer plantation, récolte et replantation.
-- [ ] Acheter les déblocages via `get_cost()`.
+- [x] Gérer plantation, récolte et replantation.
+- [x] Acheter les déblocages directement via le pont MCP.
+- [x] Mesurer productivité, couverture de grille et wraps de navigation.
 - [ ] Ajouter eau, vitesse et tournesols.
 - [ ] Séparer les modules de code et les tester.
 

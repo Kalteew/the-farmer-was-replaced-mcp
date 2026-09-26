@@ -15,3 +15,9 @@
 - Exécuté un run borné de deux `harvest()` : inventaire confirmé à 5 foin.
 - Testé `unlock(Unlocks.Loops)` ; refus attendu car `Auto_Unlock` n'est pas débloqué.
 - Script principal remis dans un état valide avec une récolte simple.
+- Ajout de `tfwr_unlock` et de l'arrêt direct via le pont BepInEx.
+- Débloqué `Loops`, `Speed`, `Plant`, `Expand` niveau 2, `Carrots`, `Operators`, `Senses` et `Variables`.
+- Ajout de `tfwr_measure_run` pour mesurer inventaire, productivité, couverture, déplacements et wraps.
+- Corrigé le parcours de grille : le terrain est torique sur les axes vertical et horizontal.
+- Débloqué `Variables`, `Functions` et `Speed` niveau 2.
+- Mesure complète validée : couverture `9/9`, `4` wraps détectés, `+9` carottes et `+2` bois nets sur 12 secondes.

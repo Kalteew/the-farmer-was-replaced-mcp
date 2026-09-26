@@ -296,6 +296,117 @@ async function runGame(requestedSave) {
   }
 }
 
+function sleep(milliseconds) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+function liveInventory(state) {
+  return Object.fromEntries((state?.inventory ?? []).map((entry) => [entry.name, Number(entry.amount) || 0]));
+}
+
+function inventoryDelta(before, after) {
+  const names = new Set([...Object.keys(before), ...Object.keys(after)]);
+  return Object.fromEntries([...names].sort().map((name) => [name, (after[name] ?? 0) - (before[name] ?? 0)]).filter(([, amount]) => amount !== 0));
+}
+
+function entityCounts(state) {
+  return Object.fromEntries(Object.entries((state?.grid?.entities ?? []).reduce((counts, entry) => {
+    counts[entry.name] = (counts[entry.name] ?? 0) + 1;
+    return counts;
+  }, {})).sort(([a], [b]) => a.localeCompare(b)));
+}
+
+function dronePosition(state) {
+  const position = state?.grid?.drones?.[0]?.position;
+  return position && Number.isFinite(position.x) && Number.isFinite(position.y)
+    ? { x: position.x, y: position.y }
+    : null;
+}
+
+function routeMetrics(samples) {
+  const positions = samples.map((sample) => sample.position).filter(Boolean);
+  const unique = new Set(positions.map(({ x, y }) => `${x},${y}`));
+  let changes = 0;
+  let wraps = 0;
+  let maxSame = 0;
+  let same = 0;
+  for (let index = 1; index < positions.length; index++) {
+    const previous = positions[index - 1];
+    const current = positions[index];
+    if (previous.x !== current.x || previous.y !== current.y) {
+      changes++;
+      if (Math.abs(previous.x - current.x) > 1 || Math.abs(previous.y - current.y) > 1) wraps++;
+      same = 0;
+    } else {
+      same++;
+      maxSame = Math.max(maxSame, same);
+    }
+  }
+  return {
+    samples: positions.length,
+    uniquePositions: unique.size,
+    positionChanges: changes,
+    wraps,
+    maxSamePositionSamples: maxSame,
+    path: [...unique].map((value) => value.split(",").map(Number)).map(([x, y]) => ({ x, y })),
+  };
+}
+
+async function measureRun(requestedSave, durationMs, sampleMs) {
+  const save = await resolveSave(requestedSave);
+  const main = scriptPath(save.folder, "main.py");
+  if (!existsSync(main)) throw new Error(`main.py absent de ${save.name}. Écris-le d'abord avec tfwr_write_script.`);
+
+  const requestedName = requestedSave ? save.name.toLowerCase() : null;
+  if (requestedName && (await activeSaveName()).toLowerCase() !== requestedName) {
+    await bridgeFetch(`load/${save.name}`);
+    await sleep(250);
+  }
+
+  await bridgeFetch("stop").catch(() => {});
+  const before = await bridgeFetch("state");
+  const startedAt = Date.now();
+  await bridgeFetch("run");
+  const samples = [];
+  const errors = [];
+  while (Date.now() - startedAt < durationMs) {
+    await sleep(Math.min(sampleMs, Math.max(1, durationMs - (Date.now() - startedAt))));
+    try {
+      const state = await bridgeFetch("state");
+      samples.push({
+        atMs: Date.now() - startedAt,
+        position: dronePosition(state),
+        state: state?.grid?.drones?.[0]?.state ?? null,
+        entities: entityCounts(state),
+      });
+    } catch (error) {
+      errors.push(error?.message ?? String(error));
+    }
+  }
+  const stopped = await bridgeFetch("stop").catch((error) => ({ ok: false, error: error?.message ?? String(error) }));
+  const after = await bridgeFetch("state");
+  const elapsedMs = Math.max(1, Date.now() - startedAt);
+  const beforeInventory = liveInventory(before);
+  const afterInventory = liveInventory(after);
+  const delta = inventoryDelta(beforeInventory, afterInventory);
+  const positiveDelta = Object.fromEntries(Object.entries(delta).filter(([, amount]) => amount > 0));
+  const route = routeMetrics(samples);
+  const expectedCells = new Set((after?.grid?.grounds ?? []).map((entry) => `${entry.position?.x},${entry.position?.y}`)).size;
+  return {
+    save: save.name,
+    elapsedMs,
+    requestedDurationMs: durationMs,
+    sampleMs,
+    inventory: { before: beforeInventory, after: afterInventory, delta, positiveDelta },
+    productivityPerMinute: Object.fromEntries(Object.entries(positiveDelta).map(([name, amount]) => [name, Number((amount * 60000 / elapsedMs).toFixed(2))])),
+    route: { ...route, expectedCells, coverageRate: expectedCells ? Number((route.uniquePositions / expectedCells).toFixed(3)) : 0 },
+    finalGridEntities: entityCounts(after),
+    finalDroneState: after?.grid?.drones?.[0] ?? null,
+    stopped,
+    errors,
+  };
+}
+
 function register(server) {
   server.registerTool("tfwr_bridge_health", {
     description: "Vérifie si le plugin BepInEx est chargé et si le jeu expose son état en mémoire.",
@@ -415,6 +526,17 @@ function register(server) {
     inputSchema: z.object({ save: z.string().optional() }),
   }, async ({ save: requestedSave }) => {
     try { return textResult(await runGame(requestedSave)); } catch (error) { return errorResult(error); }
+  });
+
+  server.registerTool("tfwr_measure_run", {
+    description: "Lance main.py pendant une durée courte et mesure la productivité, les cases réellement visitées, les changements de position et les wraps de grille.",
+    inputSchema: z.object({
+      save: z.string().optional(),
+      durationMs: z.number().int().min(1000).max(60000).default(10000),
+      sampleMs: z.number().int().min(50).max(1000).default(100),
+    }),
+  }, async ({ save, durationMs, sampleMs }) => {
+    try { return textResult(await measureRun(save, durationMs, sampleMs)); } catch (error) { return errorResult(error); }
   });
 
   server.registerTool("tfwr_stop", {

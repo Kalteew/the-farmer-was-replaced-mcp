@@ -41,11 +41,13 @@ La documentation de référence locale est dans `docs/LOCAL_KNOWLEDGE.md`. Les s
 - `tfwr_bridge_health`, `tfwr_load_save`, `tfwr_live_state`, `tfwr_live_inventory`
 - `tfwr_live_unlocks`, `tfwr_unlock`, `tfwr_live_catalog`, `tfwr_live_grid`
 - `tfwr_read_script`, `tfwr_write_script`
-- `tfwr_run`, `tfwr_stop`, `tfwr_pause`, `tfwr_save`
+- `tfwr_run`, `tfwr_measure_run`, `tfwr_stop`, `tfwr_pause`, `tfwr_save`
 - `tfwr_get_output`, `tfwr_read_reference`
 - `tfwr_list_recipes`, `tfwr_recipe_tree`, `tfwr_add_recipe`
 
 `tfwr_write_script` crée une copie dans `.mcp-backups` avant d'écraser un fichier existant. `tfwr_run` exécute directement le script via le pont BepInEx ; F5 reste un secours si le pont n'est pas disponible.
+
+`tfwr_measure_run` exécute une passe bornée et retourne les variations d'inventaire, la productivité par minute, les positions visitées, la couverture de grille, les changements de position et les wraps détectés sur les deux axes.
 
 ### Actions en jeu
 
@@ -54,6 +56,8 @@ La documentation de référence locale est dans `docs/LOCAL_KNOWLEDGE.md`. Les s
 - `tfwr_save` envoie Ctrl+S à la fenêtre du jeu.
 
 Pour une action de progression, lire d'abord `tfwr_live_unlocks` et l'état réel du jeu, puis utiliser `tfwr_unlock`. Les coûts restent calculés par le jeu.
+
+Les déplacements de la ferme sont toriques : dépasser un bord fait réapparaître le drone sur le bord opposé, horizontalement comme verticalement. Un balayage fiable doit donc utiliser exactement `get_world_size()` déplacements par axe, sans mouvements de correction aux bords.
 
 `tfwr_get_state` lit le JSON de sauvegarde (déblocages, inventaire sérialisé, terrain et entités quand le jeu les a enregistrés). `tfwr_capture_screen` fournit en plus une image de l'interface réelle. Les recettes et coûts documentés sont une base locale : les coûts dynamiques du jeu devront être confirmés avec `get_cost()` avant une action importante.
 
