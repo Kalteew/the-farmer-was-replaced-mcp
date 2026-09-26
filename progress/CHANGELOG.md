@@ -48,3 +48,10 @@
 - Corrigé `tfwr_run` pour arrêter proprement puis relancer le script avec le raccourci fiable du jeu lorsque l'appel interne répond sans réellement donner le focus à la fenêtre de code.
 - Vérifié en live la ferme mixte : `10` tournesols, `15` carottes, `15` arbres, `16` buissons et `8` cases d'herbe ; simulation active à `speedFactor 15,1875`.
 - Acheté `Pumpkins` niveau 3 puis 4 ; `Expand` niveau 6 reste la cible à `8 000` citrouilles.
+
+## 2026-09-26 — pivot citrouilles
+
+- Remplacé la ferme mixte par un carré de citrouilles `6×6`, avec `10` tournesols, `12` carottes et `6` cases d'herbe.
+- Corrigé les citrouilles mortes : récolte du plant mort avant replantation, sinon le carré géant restait bloqué.
+- Corrigé la replantation des tournesols après récolte ; le bonus solaire reste actif (`speedFactor 15,1875`).
+- Première méga-récolte observée : `1 808` citrouilles ; la ferme continue de remplir le carré pour les suivantes.

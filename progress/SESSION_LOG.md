@@ -82,6 +82,16 @@ Progression : l'arbre est au niveau `Pumpkins 4`, la ferme tourne de nouveau san
 Blocage ou risque : le stock de citrouilles doit remonter fortement ; le pivot 8×8 doit être validé avant de remplacer la ferme mixte.
 Prochaine étape : tester puis lancer une boucle citrouilles robuste, accumuler `8 000` citrouilles et acheter `Expand 6`.
 
+Date : 2026-09-26
+Sauvegarde : Save3
+Objectif : laisser tourner la ferme de citrouilles jusqu'à `Expand 6`.
+Script : game/Save3/main.py
+Action : carré 6×6 de citrouilles, replantation solaire, réserve de 6 cases d'herbe et correction des citrouilles mortes avant replantation.
+Résultat observé : première méga-récolte à `1 808` citrouilles ; état live actif à `speedFactor 15,1875`, avec `10` tournesols, `26` citrouilles en croissance, `12` carottes et `6` herbes.
+Progression : `Pumpkins` niveau 4 est acquis et l'automatisation AFK surveille désormais le prochain achat utile.
+Blocage ou risque : les citrouilles mortes apparaissent aléatoirement et allongent certains cycles ; elles sont maintenant retirées automatiquement.
+Prochaine étape : accumuler `8 000` citrouilles, acheter `Expand 6`, puis adapter le carré à la nouvelle taille.
+
 ## Modèle
 
 ```text

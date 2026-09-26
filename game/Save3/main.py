@@ -1,91 +1,68 @@
-# Ferme AFK torique : foin, puissance solaire, carottes, arbres et buissons.
-# Les 10 tournesols sont inspectés à chaque tour et seul celui qui a le
-# plus de pétales est récolté, ce qui active le bonus de puissance x8.
+# Ferme AFK : carré de citrouilles 6x6, puissance solaire et carottes.
 clear()
 
 while True:
     size = get_world_size()
-    best_petals = -1
-    best_x = -1
-    best_y = -1
+    pumpkin_ready = True
+
     for column in range(size):
         for row in range(size):
             x = get_pos_x()
             y = get_pos_y()
 
-            reserve_plot = False
-            if x == 0:
-                reserve_plot = True
+            pumpkin_plot = False
+            if x < 6:
+                if y < 6:
+                    pumpkin_plot = True
 
             sunflower_plot = False
-            if x == 3:
-                if y == 0:
+            if x == 6:
+                if y < 5:
                     sunflower_plot = True
-                if y == 1:
-                    sunflower_plot = True
-                if y == 2:
-                    sunflower_plot = True
-                if y == 3:
-                    sunflower_plot = True
-                if y == 4:
-                    sunflower_plot = True
-                if y == 5:
-                    sunflower_plot = True
-            if x == 4:
-                if y == 0:
-                    sunflower_plot = True
-                if y == 1:
-                    sunflower_plot = True
-                if y == 2:
-                    sunflower_plot = True
-                if y == 3:
+            if x == 7:
+                if y < 5:
                     sunflower_plot = True
 
-            carrot_plot = False
-            if x == 1:
-                carrot_plot = True
-            if x == 2:
-                if y == 0:
-                    carrot_plot = True
-                if y == 1:
-                    carrot_plot = True
-                if y == 2:
-                    carrot_plot = True
-                if y == 3:
-                    carrot_plot = True
-                if y == 4:
-                    carrot_plot = True
+            grass_plot = False
+            if x == 6:
                 if y == 5:
-                    carrot_plot = True
+                    grass_plot = True
                 if y == 6:
-                    carrot_plot = True
+                    grass_plot = True
+                if y == 7:
+                    grass_plot = True
+            if x == 7:
+                if y == 5:
+                    grass_plot = True
+                if y == 6:
+                    grass_plot = True
+                if y == 7:
+                    grass_plot = True
 
-            tree_plot = False
-            if size % 2 == 0:
-                if x % 2 == 0:
-                    if y % 2 == 0:
-                        tree_plot = True
+            if pumpkin_plot:
+                entity = get_entity_type()
+                if entity == Entities.Dead_Pumpkin:
+                    harvest()
+                    plant(Entities.Pumpkin)
+                    pumpkin_ready = False
                 else:
-                    if y % 2 == 1:
-                        tree_plot = True
-            else:
-                if x == 1:
-                    if y == 1:
-                        tree_plot = True
-                    if y == 3:
-                        tree_plot = True
-                if x == 2:
-                    if y == 0:
-                        tree_plot = True
-                    if y == 2:
-                        tree_plot = True
-                if x == 3:
-                    if y == 1:
-                        tree_plot = True
-                    if y == 3:
-                        tree_plot = True
-
-            if sunflower_plot:
+                    if entity == None:
+                        if get_ground_type() == Grounds.Grassland:
+                            till()
+                        plant(Entities.Pumpkin)
+                        pumpkin_ready = False
+                    else:
+                        if entity == Entities.Pumpkin:
+                            if not can_harvest():
+                                pumpkin_ready = False
+                        else:
+                            if can_harvest():
+                                harvest()
+                            if get_ground_type() == Grounds.Grassland:
+                                till()
+                            plant(Entities.Pumpkin)
+                            pumpkin_ready = False
+            elif sunflower_plot:
                 if get_ground_type() == Grounds.Grassland:
                     till()
                 if get_entity_type() == None:
@@ -93,57 +70,36 @@ while True:
                 else:
                     if get_entity_type() == Entities.Sunflower:
                         if can_harvest():
-                            petals = measure()
-                            if petals > best_petals:
-                                best_petals = petals
-                                best_x = x
-                                best_y = y
-            elif reserve_plot:
+                            harvest()
+                        if get_entity_type() == None:
+                            plant(Entities.Sunflower)
+            elif grass_plot:
                 if can_harvest():
                     harvest()
             else:
-                harvested = False
                 if can_harvest():
                     harvest()
-                    harvested = True
+                if get_ground_type() == Grounds.Grassland:
+                    till()
+                if get_entity_type() == None:
+                    if num_items(Items.Wood) > 0:
+                        if num_items(Items.Hay) > 0:
+                            plant(Entities.Carrot)
 
-                if carrot_plot:
-                    if get_ground_type() == Grounds.Grassland:
-                        till()
-                    if get_entity_type() == None:
-                        if num_items(Items.Wood) > 0:
-                            if num_items(Items.Hay) > 0:
-                                plant(Entities.Carrot)
-                else:
-                    if tree_plot:
-                        if get_ground_type() == Grounds.Grassland:
-                            if harvested:
-                                plant(Entities.Tree)
-                            else:
-                                if get_entity_type() == None:
-                                    plant(Entities.Tree)
-                    else:
-                        if get_ground_type() == Grounds.Grassland:
-                            if harvested:
-                                plant(Entities.Bush)
-                            else:
-                                if get_entity_type() == None:
-                                    plant(Entities.Bush)
-
-            if not reserve_plot:
-                if get_water() < 0.5:
-                    if num_items(Items.Water) > 0:
-                        use_item(Items.Water)
+            if get_water() < 0.5:
+                if num_items(Items.Water) > 0:
+                    use_item(Items.Water)
             move(North)
         move(East)
 
-    if best_x != -1:
-        while get_pos_x() != best_x:
+    if pumpkin_ready:
+        for column in range(size):
+            for row in range(size):
+                x = get_pos_x()
+                y = get_pos_y()
+                if x < 6:
+                    if y < 6:
+                        if can_harvest():
+                            harvest()
+                move(North)
             move(East)
-        while get_pos_y() != best_y:
-            move(North)
-        if can_harvest():
-            harvest()
-        if get_entity_type() == None:
-            plant(Entities.Sunflower)
-

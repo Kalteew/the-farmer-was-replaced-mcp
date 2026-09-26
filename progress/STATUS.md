@@ -6,10 +6,10 @@ Dernière mise à jour : 2026-09-26
 
 - Sauvegarde active : `Save3`
 - Phase : progression AFK active sur une ferme 8×8
-- Ressources observées : `1 526 hay`, `190 543 wood`, `255 carrot`, `80 pumpkin`, `818 water`, `7,37 power`
+- Ressources observées : `1 017 hay`, `191 535 wood`, `10 carrot`, `1 808 pumpkin`, `860 water`, `582 power`
 - Déblocages observés : `Speed` niveau 5, `Expand` niveau 5, `Pumpkins` niveau 4, `Sunflowers`, `Watering` niveau 5, et les primitives de navigation/scripting
 - Script principal : `game/Save3/main.py`
-- Boucle : 8 cases de foin, 10 tournesols, 15 parcelles de carottes, arbres espacés, buissons de remplissage, arrosage sous 50 %
+- Boucle : carré de citrouilles 6×6, 10 tournesols, 12 parcelles de carottes, 6 cases d'herbe, arrosage sous 50 % et remplacement automatique des citrouilles mortes
 - File Watcher : activé dans `options.txt`
 
 ## Infrastructure
@@ -22,8 +22,8 @@ Dernière mise à jour : 2026-09-26
 
 ## À faire ensuite
 
-1. Laisser la puissance solaire accélérer la ferme mixte et reconstituer les carottes.
-2. Tester puis passer en carré de citrouilles 8×8 pour financer `Expand` niveau 6.
+1. Laisser la puissance solaire accélérer le carré et reconstituer les graines.
+2. Accumuler les méga-récoltes de citrouilles pour financer `Expand` niveau 6.
 3. Accumuler `8 000` citrouilles pour l'expansion suivante.
 
 Note : le parcours fiable exploite le wrap horizontal et vertical ; il parcourt chaque case exactement une fois et revient au point de départ.
