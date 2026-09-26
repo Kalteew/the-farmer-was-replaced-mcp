@@ -102,3 +102,4 @@
 - Corrigé la fausse détection de carré prêt : toute citrouille replantée force désormais un nouveau cycle de croissance complet.
 - Remplacé les préconditions approximatives des tournesols par `get_cost()`, supprimant le warning de ressource manquante.
 - Ajouté le mode cactus dormant : après `Cactus` niveau 2, le script construira un champ trié, récoltera la propagation carrée et produira les cactus requis par le prochain niveau de labyrinthes.
+- La boucle de labyrinthes est maintenant limitée aux coûts d'or réellement encore nécessaires (`Simulation` puis les niveaux `Megafarm`), afin de rendre le temps au champ dès que l'or n'est plus le goulot.

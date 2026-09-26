@@ -124,6 +124,16 @@ def needs_cactus():
                 return True
     return False
 
+def needs_gold():
+    for unlock in [Unlocks.Simulation, Unlocks.Megafarm]:
+        cost = get_cost(unlock)
+        if cost != None:
+            for item in cost:
+                if item == Items.Gold:
+                    if num_items(Items.Gold) < cost[item]:
+                        return True
+    return False
+
 def sort_cactus(side):
     for row in range(side):
         for pass_index in range(side):
@@ -211,7 +221,7 @@ def run_cactus_phase():
         clear()
 
     go_to(size - 1, size - 1)
-    if num_unlocked(Unlocks.Mazes) > 0:
+    if num_unlocked(Unlocks.Mazes) > 0 and needs_gold():
         run_maze()
 
 while True:
@@ -273,7 +283,7 @@ while True:
                 if x >= size - 7:
                     grass_plot = True
 
-                if maze_plot and num_unlocked(Unlocks.Mazes) > 0:
+                if maze_plot and num_unlocked(Unlocks.Mazes) > 0 and needs_gold():
                     run_maze()
                 elif sunflower_plot:
                     if get_ground_type() == Grounds.Grassland:
@@ -363,7 +373,7 @@ while True:
                     if y >= 5:
                         grass_plot = True
 
-                if maze_plot and num_unlocked(Unlocks.Mazes) > 0:
+                if maze_plot and num_unlocked(Unlocks.Mazes) > 0 and needs_gold():
                     run_maze()
                 elif pumpkin_plot:
                     entity = get_entity_type()

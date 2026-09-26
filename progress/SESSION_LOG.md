@@ -242,6 +242,16 @@ Progression : `Cactus` 2 coûte `20 000` citrouilles, `Mazes` 2 coûte `12 000` 
 Blocage ou risque : aucun blocage ; le cycle de reconstruction est lent lorsque la puissance solaire est basse, mais le drone avance et aucun warning ne revient.
 Prochaine étape : laisser les carottes remonter, valider une vraie méga-récolte citrouilles, puis accumuler `20 000` citrouilles pour activer le mode cactus.
 
+Date : 2026-09-26
+Sauvegarde : Save3
+Objectif : éviter que la production d'or monopolise le drone quand elle n'est plus prioritaire.
+Script : game/Save3/main.py
+Action : ajout de `needs_gold()` basé sur `get_cost()` ; les labyrinthes tournent seulement lorsqu'un coût d'or réel de `Simulation` ou `Megafarm` reste à payer.
+Résultat observé : relance vérifiée, simulation non pausée, deux drones disponibles et sortie live vide.
+Progression : l'or était à `3 512` au dernier contrôle ; le prochain coût d'or est celui de `Megafarm` niveau 2 (`8 000`).
+Blocage ou risque : aucun blocage ; la ferme reprend désormais la priorité cultures dès que le prochain achat d'or est couvert.
+Prochaine étape : poursuivre le cycle carottes/citrouilles vers `Cactus` 2.
+
 ## Modèle
 
 ```text
