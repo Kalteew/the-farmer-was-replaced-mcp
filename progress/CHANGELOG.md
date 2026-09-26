@@ -34,3 +34,10 @@
 - La grille est passée à `8×8` ; le script a été reconverti en ferme mixte de récupération.
 - Optimisation du débit : `8` cases de foin, `15` parcelles de carottes et parité torique pour les arbres.
 - Débloqué `Watering` niveau 4 et `Pumpkins` niveau 1 ; le stock observé a atteint `5 150` bois, `153` carottes et `158` foin.
+
+## 2026-09-26 — puissance solaire
+
+- Débloqué `Speed` niveau 4 puis `Sunflowers` via MCP.
+- Remplacé la ferme mixte par une configuration 8×8 avec 10 tournesols, 15 carottes, 15 arbres, 16 buissons et 8 cases de foin.
+- Ajouté la sélection du tournesol adulte ayant le plus de pétales avant récolte, pour activer le bonus de puissance ×8.
+- Vérifié en live : `6` puissance produite, `speedFactor` passé de `5,0625` à `10,125`, drone actif sans erreur.

@@ -52,6 +52,16 @@ Progression : le débit carottes a été multiplié par environ trois par rappor
 Blocage ou risque : `Speed` 4 et `Sunflowers` demandent `500` carottes ; la ferme mixte doit continuer à tourner.
 Prochaine étape : laisser l'AFK atteindre `500` carottes, acheter `Speed` 4 puis `Sunflowers` via MCP.
 
+Date : 2026-09-26 14:55
+Sauvegarde : Save3
+Objectif : exploiter le déblocage Sunflowers comme multiplicateur de productivité.
+Script : game/Save3/main.py
+Action : ajout de 10 parcelles de tournesols et d'une récolte différée du tournesol ayant le plus de pétales ; conservation des carottes, arbres, buissons et de la réserve de foin.
+Résultat observé : après redémarrage propre, `10` tournesols présents, `6` puissance en inventaire, `speedFactor` doublé à `10,125`, drone en action.
+Progression : la boucle AFK dispose maintenant du bonus de puissance solaire.
+Blocage ou risque : l'eau reste un consommable limitant ; `Expand` niveau 6 demande `8 000` citrouilles.
+Prochaine étape : acheter `Speed` niveau 5 et `Watering` niveau 5, puis lancer une ferme de citrouilles 8×8.
+
 ## Modèle
 
 ```text
