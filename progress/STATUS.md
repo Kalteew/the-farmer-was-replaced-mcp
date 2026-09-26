@@ -6,7 +6,7 @@ Dernière mise à jour : 2026-09-26
 
 - Sauvegarde active : `Save3`
 - Phase : progression AFK active sur une ferme 12×12
-- Ressources observées : `7 345 hay`, `119 718 wood`, `728 carrot`, `18 328 pumpkin`, `1 160 water`, `438 power`
+- Ressources observées : `8 529 hay`, `117 646 wood`, `1 035 carrot`, `18 816 pumpkin`, `1 086 water`, `595 power`
 - Déblocages observés : `Speed` niveau 5, `Expand` niveau 6, `Pumpkins` niveau 4, `Sunflowers`, `Watering` niveau 6, et les primitives de navigation/scripting
 - Script principal : `game/Save3/main.py`
 - Boucle : bootstrap adaptatif (herbe + carottes + 10 tournesols), puis carré de citrouilles dynamique (`taille - 1`, actuellement 11×11), vitesse solaire et remplacement automatique des citrouilles mortes

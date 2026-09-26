@@ -78,3 +78,4 @@
 - Suppression du `clear()` au mauvais moment lors du passage carottes → citrouilles ; nouvelle récolte vérifiée à `17 672` citrouilles, sans warning.
 - Cycle suivant confirmé à `18 120` citrouilles avec la puissance solaire stable et la sortie live vide.
 - Cycle supplémentaire confirmé à `18 328` citrouilles ; vitesse solaire et boucle adaptative toujours actives.
+- Stock live porté à `18 816` citrouilles pendant un cycle long, sans erreur ni arrêt.

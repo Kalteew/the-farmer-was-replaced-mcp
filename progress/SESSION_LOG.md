@@ -202,6 +202,16 @@ Progression : la ferme reste stable et continue vers le seuil `64 000`.
 Blocage ou risque : aucun achat disponible actuellement.
 Prochaine étape : laisser l'AFK atteindre `Expand 7`.
 
+Date : 2026-09-26
+Sauvegarde : Save3
+Objectif : maintenir la progression AFK vers `Expand 7`.
+Script : game/Save3/main.py
+Action : surveillance prolongée du cycle adaptatif, sans changement ni dépense hors priorité.
+Résultat observé : `18 816` citrouilles, `8 529` foin, `595` puissance, drone actif et sortie live vide.
+Progression : la ferme reste stable pendant les cycles longs de croissance.
+Blocage ou risque : aucun blocage ; les coûts live restent à `64 000` citrouilles/carottes pour les prochains paliers.
+Prochaine étape : poursuivre automatiquement jusqu'à l'achat d'`Expand 7`.
+
 ## Modèle
 
 ```text
