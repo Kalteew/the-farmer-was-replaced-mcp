@@ -459,7 +459,7 @@ while True:
                 if x >= pumpkin_side:
                     grass_plot = True
 
-                if maze_plot and num_unlocked(Unlocks.Mazes) > 0 and needs_gold() and num_items(Items.Carrot) >= pumpkin_side * pumpkin_side:
+                if maze_plot and num_unlocked(Unlocks.Mazes) > 0 and needs_gold() and num_unlocked(Unlocks.Cactus) > 1:
                     run_maze()
                 elif pumpkin_plot:
                     entity = get_entity_type()
