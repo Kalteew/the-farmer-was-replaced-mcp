@@ -1,0 +1,12 @@
+node_modules/
+.deps/
+bridge/**/bin/
+bridge/**/obj/
+.mcp-backups/
+.mcp-cache/
+
+# Données locales du jeu et journaux
+Saves/
+output.txt
+Player.log
+*.log

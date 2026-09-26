@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "source": "https://thefarmerwasreplaced.wiki.gg/wiki/Unlocks_Data",
+  "unlocks": [
+    {"id":"loops","gameKey":"Unlocks.Loops","label":"Boucles","costs":[{"Hay":5}],"description":"Débloque les boucles while."},
+    {"id":"plant","gameKey":"Unlocks.Plant","label":"Plantation","costs":[{"Hay":50}],"description":"Permet de planter."},
+    {"id":"senses","gameKey":"Unlocks.Senses","label":"Capteurs","costs":[{"Hay":100}],"description":"Permet de lire la ferme."},
+    {"id":"carrots","gameKey":"Unlocks.Carrots","label":"Carottes","costs":[{"Wood":50}],"description":"Débloque le sol et les carottes."},
+    {"id":"variables","gameKey":"Unlocks.Variables","label":"Variables","costs":[{"Carrot":35}],"description":"Débloque les variables."},
+    {"id":"functions","gameKey":"Unlocks.Functions","label":"Fonctions","costs":[{"Carrot":40}],"description":"Permet de définir des fonctions."},
+    {"id":"operators","gameKey":"Unlocks.Operators","label":"Opérateurs","costs":[{"Hay":150},{"Wood":10}],"description":"Débloque les opérateurs."},
+    {"id":"lists","gameKey":"Unlocks.Lists","label":"Listes","costs":[{"Carrot":500}],"description":"Débloque les listes."},
+    {"id":"dictionaries","gameKey":"Unlocks.Dictionaries","label":"Dictionnaires","costs":[{"Pumpkin":2500}],"description":"Débloque dictionnaires et ensembles."},
+    {"id":"import","gameKey":"Unlocks.Import","label":"Imports","costs":[{"Carrot":80}],"description":"Permet les imports."},
+    {"id":"trees","gameKey":"Unlocks.Trees","label":"Arbres","costs":[{"Wood":50},{"Carrot":70}],"description":"Débloque les arbres et améliore le bois."},
+    {"id":"speed","gameKey":"Unlocks.Speed","label":"Vitesse","costs":[{"Hay":20},{"Wood":20},{"Wood":50,"Carrot":50},{"Carrot":500},{"Carrot":1000}],"description":"Améliore la vitesse."},
+    {"id":"pumpkins","gameKey":"Unlocks.Pumpkins","label":"Citrouilles","costs":[{"Wood":500,"Carrot":200},{"Carrot":1000},{"Carrot":4000},{"Carrot":16000}],"description":"Débloque les citrouilles."},
+    {"id":"sunflowers","gameKey":"Unlocks.Sunflowers","label":"Tournesols","costs":[{"Carrot":500}],"description":"Débloque les tournesols et la puissance."},
+    {"id":"watering","gameKey":"Unlocks.Watering","label":"Arrosage","costs":[{"Wood":50},{"Wood":200},{"Wood":800},{"Wood":3200}],"description":"Débloque l'eau et ses améliorations."},
+    {"id":"fertilizer","gameKey":"Unlocks.Fertilizer","label":"Engrais","costs":[{"Wood":500},{"Wood":1500},{"Wood":9000}],"description":"Débloque l'engrais."},
+    {"id":"polyculture","gameKey":"Unlocks.Polyculture","label":"Polyculture","costs":[{"Pumpkin":3000},{"Bone":10000},{"Bone":50000}],"description":"Débloque les compagnons de culture."},
+    {"id":"cactus","gameKey":"Unlocks.Cactus","label":"Cactus","costs":[{"Pumpkin":5000},{"Pumpkin":20000},{"Pumpkin":120000}],"description":"Débloque les cactus."},
+    {"id":"mazes","gameKey":"Unlocks.Mazes","label":"Labyrinthes","costs":[{"Weird_Substance":1000},{"Cactus":12000},{"Cactus":72000}],"description":"Débloque les labyrinthes et l'or."},
+    {"id":"dinosaurs","gameKey":"Unlocks.Dinosaurs","label":"Dinosaures","costs":[{"Cactus":2000},{"Cactus":12000},{"Cactus":72000}],"description":"Débloque les dinosaures et les os."},
+    {"id":"megafarm","gameKey":"Unlocks.Megafarm","label":"Méga-ferme","costs":[{"Gold":2000},{"Gold":8000},{"Gold":32000}],"description":"Débloque davantage de drones."},
+    {"id":"simulation","gameKey":"Unlocks.Simulation","label":"Simulation","costs":[{"Gold":5000}],"description":"Permet de tester des scripts en simulation."},
+    {"id":"timing","gameKey":"Unlocks.Timing","label":"Timing","costs":[{"Pumpkin":1000}],"description":"Débloque les outils de mesure du temps."},
+    {"id":"leaderboard","gameKey":"Unlocks.Leaderboard","label":"Classements","costs":[{"Bone":2000000,"Gold":1000000}],"description":"Débloque les runs chronométrés."}
+  ]
+}

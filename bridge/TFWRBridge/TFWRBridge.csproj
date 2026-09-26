@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>TFWRBridge</AssemblyName>
+    <RootNamespace>TFWRBridge</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GameRoot Condition="'$(GameRoot)' == '' and '$(TFWR_GAME_ROOT)' != ''">$(TFWR_GAME_ROOT)</GameRoot>
+    <GameRoot Condition="'$(GameRoot)' == ''">C:\Program Files (x86)\Steam\steamapps\common\The Farmer Was Replaced</GameRoot>
+    <BepInExRoot>$(MSBuildThisFileDirectory)..\..\.deps\bepinex-5.4.23.5\package\BepInEx</BepInExRoot>
+    <ManagedRoot>$(GameRoot)\TheFarmerWasReplaced_Data\Managed</ManagedRoot>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="BepInEx">
+      <HintPath>$(BepInExRoot)\core\BepInEx.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(ManagedRoot)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(ManagedRoot)\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Core">
+      <HintPath>$(ManagedRoot)\Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Utils">
+      <HintPath>$(ManagedRoot)\Utils.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

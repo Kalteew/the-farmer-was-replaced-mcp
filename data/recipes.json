@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "recipes": [
+    {"id":"harvest_grass","name":"Récolter l'herbe","category":"harvest","inputs":{},"outputs":{"Hay":1},"notes":"L'herbe repousse sur Grassland.","source":"docs/LOCAL_KNOWLEDGE.md"},
+    {"id":"harvest_bush","name":"Récolter un buisson","category":"harvest","inputs":{},"outputs":{"Wood":1},"source":"docs/LOCAL_KNOWLEDGE.md"},
+    {"id":"harvest_tree","name":"Récolter un arbre","category":"harvest","inputs":{},"outputs":{"Wood":5},"notes":"Les arbres voisins ralentissent la pousse.","source":"docs/LOCAL_KNOWLEDGE.md"},
+    {"id":"harvest_carrot","name":"Récolter une carotte","category":"harvest","inputs":{},"outputs":{"Carrot":1},"source":"https://thefarmerwasreplaced.wiki.gg/wiki/Items"},
+    {"id":"harvest_pumpkin","name":"Récolter une citrouille","category":"harvest","inputs":{},"outputs":{"Pumpkin":1},"notes":"Les citrouilles voisines peuvent fusionner.","source":"https://thefarmerwasreplaced.wiki.gg/wiki/Items"},
+    {"id":"harvest_sunflower","name":"Récolter un tournesol","category":"harvest","inputs":{},"outputs":{"Power":1},"source":"https://thefarmerwasreplaced.wiki.gg/wiki/Items"},
+    {"id":"harvest_cactus","name":"Récolter des cactus triés","category":"harvest","inputs":{},"outputs":{"Cactus":1},"source":"https://thefarmerwasreplaced.wiki.gg/wiki/Items"},
+    {"id":"harvest_treasure","name":"Ouvrir un trésor","category":"harvest","inputs":{"Maze":1},"outputs":{"Gold":1},"source":"https://thefarmerwasreplaced.wiki.gg/wiki/Tooltips_Entities"},
+    {"id":"harvest_dinosaur","name":"Récolter une queue de dinosaure","category":"harvest","inputs":{},"outputs":{"Bone":1},"source":"https://thefarmerwasreplaced.wiki.gg/wiki/Items"},
+    {"id":"unlock_loops","name":"Débloquer les boucles","category":"unlock","inputs":{"Hay":5},"outputs":{"Unlocks.Loops":1},"source":"data/progression.json"},
+    {"id":"unlock_plant","name":"Débloquer la plantation","category":"unlock","inputs":{"Hay":50},"outputs":{"Unlocks.Plant":1},"source":"data/progression.json"},
+    {"id":"unlock_carrots","name":"Débloquer les carottes","category":"unlock","inputs":{"Wood":50},"outputs":{"Unlocks.Carrots":1},"source":"data/progression.json"},
+    {"id":"unlock_trees","name":"Débloquer les arbres","category":"unlock","inputs":{"Wood":50,"Carrot":70},"outputs":{"Unlocks.Trees":1},"source":"data/progression.json"},
+    {"id":"unlock_pumpkins","name":"Débloquer les citrouilles","category":"unlock","inputs":{"Wood":500,"Carrot":200},"outputs":{"Unlocks.Pumpkins":1},"source":"data/progression.json"},
+    {"id":"unlock_mazes","name":"Débloquer les labyrinthes","category":"unlock","inputs":{"Weird_Substance":1000},"outputs":{"Unlocks.Mazes":1},"source":"data/progression.json"}
+  ]
+}

@@ -1,0 +1,14 @@
+@popup_warning_delete_files = Souhaites-tu supprimer {0} de manière permanente ? Cette action est irréversible.
+@popup_warning_delete_save = Es-tu sûr de vouloir supprimer {0} ?
+@delete = Supprimer
+@cancel = Annuler
+@popup_warning_exit_game = Souhaites-tu sauvegarder avant de quitter ?
+@popup_warning_load_game = Souhaites-tu sauvegarder avant de charger ?
+@save = Sauvegarder
+@don't save = Ne pas sauvegarder
+@popup_warning_corrupted_save = Il semble y avoir eu un problème lors du chargement de {0}. Consulte la section sur les sauvegardes pour plus d'informations.
+@popup_warning_failed_read_save = Échec de la lecture des fichiers de sauvegarde de {0}. Assure-toi de fermer tous les autres programmes accédant aux fichiers et réessaie.
+@popup_warning_failed_write_save = Échec de l'écriture dans les fichiers de sauvegarde de {0}. Assure-toi de fermer tous les autres programmes accédant aux fichiers et réessaie.
+@ok = ok
+@popup_warning_old_save = Ce fichier de sauvegarde provient d'une ancienne version du jeu. Comme l'arbre de recherche a été retravaillé, toutes tes améliorations ont été réinitialisées pour mieux correspondre au nouveau système de progression.
+@popup_warning_unofficial_language = Ceci est une traduction non officielle créée par la communauté qui n'est pas maintenue par les développeurs du jeu. Certains textes peuvent être manquants ou inexacts.

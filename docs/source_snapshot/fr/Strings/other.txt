@@ -1,0 +1,18 @@
+@word_number = nombre
+@word_direction = direction
+@run_cancelled = Échec de l'exécution
+@average_text = {0} exécutions terminées ({2:F1}%)
+{1}
+@average_text2 = {0} exécutions terminées
+{1}
+@unlocked_in = Pour plus d'informations connexes, voir : [{0}]({1})
+@table_of_contents_section_general_info = Infos générales
+@table_of_contents_section_programming = Programmation
+@table_of_contents_section_unlocks = Déblocages
+@table_of_contents_section_builtins = Fonctions intégrées
+@table_of_contents_section_items = Objets
+@table_of_contents_section_entities = Entités
+@table_of_contents_section_grounds = Sols
+@new_hat_unlocked = ## Nouveau Chapeau Débloqué
+`change_hat(`{0}`)`
+@right_click_for_more_info = -- clic droit pour plus d'informations --
