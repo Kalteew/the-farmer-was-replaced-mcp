@@ -62,6 +62,16 @@ Progression : la boucle AFK dispose maintenant du bonus de puissance solaire.
 Blocage ou risque : l'eau reste un consommable limitant ; `Expand` niveau 6 demande `8 000` citrouilles.
 Prochaine étape : acheter `Speed` niveau 5 et `Watering` niveau 5, puis lancer une ferme de citrouilles 8×8.
 
+Date : 2026-09-26 15:00
+Sauvegarde : Save3
+Objectif : convertir le bonus solaire en progression d'arbre de recherche.
+Script : game/Save3/main.py
+Action : achats MCP de `Speed` niveau 5, `Watering` niveau 5 et `Pumpkins` niveau 2.
+Résultat observé : `speedFactor` live à `15,1875` avec puissance active, drone en action, ressources suffisantes pour préparer le pivot citrouilles.
+Progression : les trois améliorations rentables sont acquises ; `Expand` niveau 6 reste la prochaine cible à `8 000` citrouilles.
+Blocage ou risque : le stock de citrouilles est encore à `80`, donc la ferme mixte doit être remplacée temporairement par un carré de citrouilles.
+Prochaine étape : préparer puis lancer une ferme de citrouilles 8×8 sans perdre le contrôle du wrap torique.
+
 ## Modèle
 
 ```text

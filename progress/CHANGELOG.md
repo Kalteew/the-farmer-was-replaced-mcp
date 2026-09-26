@@ -41,3 +41,4 @@
 - Remplacé la ferme mixte par une configuration 8×8 avec 10 tournesols, 15 carottes, 15 arbres, 16 buissons et 8 cases de foin.
 - Ajouté la sélection du tournesol adulte ayant le plus de pétales avant récolte, pour activer le bonus de puissance ×8.
 - Vérifié en live : `6` puissance produite, `speedFactor` passé de `5,0625` à `10,125`, drone actif sans erreur.
+- Acheté `Speed` niveau 5, `Watering` niveau 5 et `Pumpkins` niveau 2 ; le `speedFactor` live atteint `15,1875` avec la puissance active.
