@@ -334,6 +334,17 @@ def run_cactus_phase():
             harvest()
         clear()
 
+    maze_cost = get_cost(Unlocks.Mazes)
+    cactus_reserve_ready = False
+    if maze_cost != None:
+        for item in maze_cost:
+            if item == Items.Cactus:
+                if num_items(Items.Cactus) >= maze_cost[item] + size * 4:
+                    cactus_reserve_ready = True
+    if needs_bones() and cactus_reserve_ready:
+        run_dinosaur()
+        return
+
     go_to(size - 1, size - 1)
     if num_unlocked(Unlocks.Mazes) > 0 and needs_gold():
         run_maze()
