@@ -6,10 +6,10 @@ Dernière mise à jour : 2026-09-26
 
 - Sauvegarde active : `Save3`
 - Phase : progression AFK active sur une ferme 12×12
-- Ressources observées : `1 507 hay`, `133 150 wood`, `676 carrot`, `6 592 pumpkin`, `1 695 water`, `2 084 power`
+- Ressources observées : `1 746 hay`, `130 675 wood`, `676 carrot`, `11 304 pumpkin`, `1 566 water`, `1 416 power`
 - Déblocages observés : `Speed` niveau 5, `Expand` niveau 6, `Pumpkins` niveau 4, `Sunflowers`, `Watering` niveau 6, et les primitives de navigation/scripting
 - Script principal : `game/Save3/main.py`
-- Boucle : bootstrap adaptatif (8 colonnes d'herbe + carottes), puis carré de citrouilles dynamique (`taille - 2`, actuellement 10×10), bordure solaire et remplacement automatique des citrouilles mortes
+- Boucle : bootstrap adaptatif (8 colonnes d'herbe + carottes), puis carré de citrouilles dynamique (`taille - 1`, actuellement 11×11), bordure solaire et remplacement automatique des citrouilles mortes
 - File Watcher : activé dans `options.txt`
 
 ## Infrastructure
@@ -24,6 +24,6 @@ Dernière mise à jour : 2026-09-26
 
 1. Laisser le bootstrap/carré adaptatif maintenir les graines et les méga-récoltes.
 2. Lire le prochain coût réel d'expansion et acheter `Expand 7` dès que le stock le permet.
-3. Accumuler `8 000` citrouilles pour l'expansion suivante.
+3. Accumuler `64 000` citrouilles pour `Expand 7`.
 
 Note : le parcours fiable exploite le wrap horizontal et vertical ; il parcourt chaque case exactement une fois et revient au point de départ.

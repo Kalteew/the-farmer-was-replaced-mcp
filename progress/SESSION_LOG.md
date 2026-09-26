@@ -132,6 +132,16 @@ Progression : le script sait maintenant financer les graines du carré 10×10 sa
 Blocage ou risque : les citrouilles mortes et les coûts de plantation allongent le cycle ; le basculement automatique les absorbe.
 Prochaine étape : laisser produire le carré 10×10, puis lire le coût réel d'`Expand 7` et l'acheter dès que possible.
 
+Date : 2026-09-26
+Sauvegarde : Save3
+Objectif : maximiser le rendement du carré sur la grille 12×12.
+Script : game/Save3/main.py
+Action : nettoyage explicite des citrouilles mortes et réduction de la bordure à une colonne, soit un carré 11×11 ; relance et contrôle de la sortie live.
+Résultat observé : nouvelle méga-récolte à `11 304` citrouilles, `1 416` puissance, drone actif et aucune sortie d'erreur.
+Progression : le rendement par cycle est supérieur au carré 10×10 tout en conservant les 10 tournesols.
+Blocage ou risque : le prochain Expand coûte `64 000` citrouilles ; le bootstrap de carottes reste nécessaire entre les récoltes.
+Prochaine étape : poursuivre les cycles adaptatifs jusqu'à `Expand 7`.
+
 ## Modèle
 
 ```text

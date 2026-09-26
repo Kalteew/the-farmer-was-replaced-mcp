@@ -9,7 +9,7 @@ clear()
 
 while True:
     size = get_world_size()
-    pumpkin_side = size - 2
+    pumpkin_side = size - 1
     seed_target = size * size
     seed_target = seed_target * 10
 
@@ -71,6 +71,7 @@ while True:
                 if pumpkin_plot:
                     entity = get_entity_type()
                     if entity == Entities.Dead_Pumpkin:
+                        harvest()
                         if num_items(Items.Carrot) > 0:
                             plant(Entities.Pumpkin)
                         else:
@@ -140,6 +141,6 @@ while True:
                         if y < pumpkin_side:
                             if can_harvest():
                                 harvest()
-                    move(North)
-                move(East)
+                move(North)
+            move(East)
             carrot_mode = True

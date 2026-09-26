@@ -67,3 +67,6 @@
 - Confirmé via la sortie live que `plant(Entities.Pumpkin)` consomme des carottes et que le carré 10×10 ne pouvait pas être rempli avec le stock restant après `Expand 6`.
 - Remplacé la boucle fixe par deux phases autonomes : 8 colonnes d'herbe et 4 colonnes de carottes pour constituer la réserve, puis carré de citrouilles dynamique avec bordure solaire.
 - La boucle rebascule en bootstrap après chaque méga-récolte si le stock de carottes est insuffisant ; vérification live réussie avec `78` citrouilles replantées et `676` carottes restantes.
+- Nettoyage explicite des citrouilles mortes ajouté ; la sortie live est redevenue vide de warnings.
+- Carré optimisé en `taille de grille - 1` : `11×11` citrouilles sur la grille 12×12, avec une seule colonne de bordure et bonus solaire conservé.
+- Nouvelle méga-récolte vérifiée à `11 304` citrouilles.
