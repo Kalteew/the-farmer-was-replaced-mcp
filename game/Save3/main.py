@@ -1,10 +1,18 @@
 # Ferme AFK adaptative : bootstrap de carottes puis carré de citrouilles.
 size = get_world_size()
-seed_target = size * size
-seed_target = seed_target * 2
+seed_target = (size - 1) * (size - 1)
+pumpkin_cost = get_cost(Entities.Pumpkin)
+if pumpkin_cost != None:
+    for item in pumpkin_cost:
+        if item == Items.Carrot:
+            seed_target = seed_target * pumpkin_cost[item]
+seed_target = seed_target + size * size
 carrot_mode = False
+pumpkin_mode = False
 if num_items(Items.Carrot) < seed_target:
     carrot_mode = True
+else:
+    pumpkin_mode = True
 clear()
 
 def solve_maze():
@@ -259,16 +267,23 @@ def run_cactus_phase():
 while True:
     size = get_world_size()
     pumpkin_side = size - 1
-    seed_target = size * size
-    seed_target = seed_target * 2
+    seed_target = pumpkin_side * pumpkin_side
+    pumpkin_cost = get_cost(Entities.Pumpkin)
+    if pumpkin_cost != None:
+        for item in pumpkin_cost:
+            if item == Items.Carrot:
+                seed_target = seed_target * pumpkin_cost[item]
+    seed_target = seed_target + size * size
 
     cactus_needed = needs_cactus()
     if cactus_needed and not cactus_mode:
         cactus_mode = True
+        pumpkin_mode = False
         clear()
     elif not cactus_needed and cactus_mode:
         cactus_mode = False
         carrot_mode = True
+        pumpkin_mode = False
         clear()
 
     if cactus_mode:
@@ -278,12 +293,14 @@ while True:
     if carrot_mode:
         if num_items(Items.Carrot) >= seed_target:
             carrot_mode = False
+            pumpkin_mode = True
 
-    if not carrot_mode:
+    if not carrot_mode and not pumpkin_mode:
         if num_items(Items.Carrot) < seed_target:
             carrot_mode = True
             clear()
             continue
+        pumpkin_mode = True
 
     carrot_drones = []
     carrot_workers = 0
@@ -396,6 +413,7 @@ while True:
             wait_for(carrot_drone)
     else:
         pumpkin_ready = True
+        pumpkin_count = 0
 
         for column in range(size):
             for row in range(size):
@@ -444,6 +462,7 @@ while True:
                                 pumpkin_ready = False
                         else:
                             if entity == Entities.Pumpkin:
+                                pumpkin_count = pumpkin_count + 1
                                 if not can_harvest():
                                     pumpkin_ready = False
                             else:
@@ -491,6 +510,9 @@ while True:
                 move(North)
             move(East)
 
+        if pumpkin_count < pumpkin_side * pumpkin_side:
+            pumpkin_ready = False
+
         if pumpkin_ready:
             for column in range(size):
                 for row in range(size):
@@ -503,4 +525,5 @@ while True:
                 move(North)
             move(East)
             carrot_mode = True
+            pumpkin_mode = False
             clear()
