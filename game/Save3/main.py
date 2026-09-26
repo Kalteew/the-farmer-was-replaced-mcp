@@ -144,3 +144,4 @@ while True:
                 move(North)
             move(East)
             carrot_mode = True
+            clear()

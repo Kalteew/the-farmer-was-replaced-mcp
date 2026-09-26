@@ -162,6 +162,16 @@ Progression : la bascule bootstrap/citrouilles reste stable ; le seuil de `64 00
 Blocage ou risque : aucun blocage, seulement un cycle de croissance long sur la grille 12×12.
 Prochaine étape : poursuivre l'AFK jusqu'à `Expand 7`.
 
+Date : 2026-09-26
+Sauvegarde : Save3
+Objectif : fiabiliser la transition entre méga-récolte et bootstrap.
+Script : game/Save3/main.py
+Action : ajout de `clear()` lors du passage en mode carottes, puis relance contrôlée.
+Résultat observé : `96` cases d'herbe restaurées, foin remonté à `2 450`, stock à `16 784` citrouilles ; aucun warning live.
+Progression : les cycles ne conservent plus les plants morts et ne bloquent plus la production de foin.
+Blocage ou risque : la puissance solaire est basse pendant le bootstrap, mais les tournesols sont replantés au retour en mode citrouilles.
+Prochaine étape : continuer vers `64 000` citrouilles et `Expand 7`.
+
 ## Modèle
 
 ```text

@@ -72,3 +72,5 @@
 - Nouvelle méga-récolte vérifiée à `11 304` citrouilles.
 - Cycle adaptatif suivant validé : `13 056` citrouilles, puis retour automatique au bootstrap de carottes sans warning.
 - Cycle suivant validé : `14 848` citrouilles, avec retour automatique au bootstrap et aucune erreur live.
+- Corrigée la transition après méga-récolte : `clear()` est maintenant appelé avant le bootstrap, ce qui restaure les `96` cases d'herbe et évite l'épuisement du foin.
+- Nouveau cycle vérifié à `16 784` citrouilles, avec la ferme toujours active.
