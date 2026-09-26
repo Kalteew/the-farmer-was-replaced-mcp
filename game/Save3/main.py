@@ -9,6 +9,7 @@ if pumpkin_cost != None:
 seed_target = seed_target + size * size
 carrot_mode = False
 pumpkin_mode = False
+pumpkin_mature_passes = 0
 if num_items(Items.Carrot) < seed_target:
     carrot_mode = True
 else:
@@ -279,11 +280,13 @@ while True:
     if cactus_needed and not cactus_mode:
         cactus_mode = True
         pumpkin_mode = False
+        pumpkin_mature_passes = 0
         clear()
     elif not cactus_needed and cactus_mode:
         cactus_mode = False
         carrot_mode = True
         pumpkin_mode = False
+        pumpkin_mature_passes = 0
         clear()
 
     if cactus_mode:
@@ -514,6 +517,11 @@ while True:
             pumpkin_ready = False
 
         if pumpkin_ready:
+            pumpkin_mature_passes = pumpkin_mature_passes + 1
+        else:
+            pumpkin_mature_passes = 0
+
+        if pumpkin_mature_passes >= 2:
             for column in range(size):
                 for row in range(size):
                     x = get_pos_x()
@@ -526,4 +534,5 @@ while True:
             move(East)
             carrot_mode = True
             pumpkin_mode = False
+            pumpkin_mature_passes = 0
             clear()
