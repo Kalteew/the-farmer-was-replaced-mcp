@@ -259,6 +259,7 @@ def sort_cactus(side):
 def run_cactus_phase():
     side = size - 1
     cactus_ready = True
+    cactus_cycle_complete = False
     for column in range(size):
         for row in range(size):
             x = get_pos_x()
@@ -295,6 +296,7 @@ def run_cactus_phase():
         if can_harvest():
             harvest()
         clear()
+        cactus_cycle_complete = True
         maze_cost = get_cost(Unlocks.Mazes)
         if maze_cost != None:
             for item in maze_cost:
@@ -304,10 +306,11 @@ def run_cactus_phase():
                             run_dinosaur()
                             return
 
-    go_to(size - 1, size - 1)
-    if num_unlocked(Unlocks.Mazes) > 0:
-        if needs_gold():
-            run_maze()
+    if cactus_cycle_complete:
+        go_to(size - 1, size - 1)
+        if num_unlocked(Unlocks.Mazes) > 0:
+            if needs_gold():
+                run_maze()
 
 def pumpkin_ready_cell():
     entity = get_entity_type()
@@ -390,11 +393,8 @@ def run_pumpkin_cycle():
             y = get_pos_y()
             delegated = x < 3 and y >= 6
             pumpkin_plot = x < pumpkin_side and y < pumpkin_side
-            maze_plot = x == size - 1 and y == size - 1
             if delegated:
                 pass
-            elif maze_plot and num_unlocked(Unlocks.Mazes) > 0 and needs_gold():
-                run_maze()
             elif pumpkin_plot:
                 if not pumpkin_ready_cell():
                     pumpkin_ready = False
@@ -432,6 +432,11 @@ def run_pumpkin_cycle():
         if num_items(Items.Pumpkin) > before:
             pumpkin_mature_passes = 0
     wait_workers(workers)
+    if pumpkin_ready:
+        if num_unlocked(Unlocks.Mazes) > 0:
+            if needs_gold():
+                go_to(size - 1, size - 1)
+                run_maze()
 
 while True:
     cactus_needed = needs_cactus()
