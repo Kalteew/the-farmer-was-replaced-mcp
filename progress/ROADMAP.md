@@ -27,7 +27,7 @@
 - [x] Gérer plantation, récolte et replantation.
 - [x] Acheter les déblocages directement via le pont MCP.
 - [x] Mesurer productivité, couverture de grille et wraps de navigation.
-- [ ] Ajouter eau, vitesse et tournesols.
+- [x] Ajouter eau et vitesse ; préparer les tournesols pour la branche suivante.
 - [ ] Séparer les modules de code et les tester.
 
 ## Phase 4 — Optimisation avancée

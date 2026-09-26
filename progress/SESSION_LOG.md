@@ -32,6 +32,16 @@ Progression : navigation déterministe et mesure de productivité validées ; `F
 Blocage ou risque : les ressources de plantation peuvent temporairement vider le foin et laisser des cases de sol vides ; la case d'herbe réservée rétablit le foin au passage suivant.
 Prochaine étape : remonter le bois et les carottes, puis viser `Expand` niveau 3 et `Trees`.
 
+Date : 2026-09-26 12:00
+Sauvegarde : Save3
+Objectif : passer d'un run borné à une ferme AFK autonome et progresser dans l'arbre.
+Script : game/Save3/main.py
+Action : boucle `while True`, réserve d'herbe, 5 parcelles carottes, arbres espacés, buissons de remplissage et arrosage automatique ; achats MCP de `Expand` 3-4, `Trees`, `Speed` 3 et `Watering` 1-3.
+Résultat observé : couverture torique complète, grille 6×6, drone en `action`, aucun mouvement perdu ; rendement monté à `1 569` bois et `110` carottes avant `Expand` 5.
+Progression : la ferme est désormais conçue pour tourner en AFK et financer les prochains paliers.
+Blocage ou risque : `Expand` 5 et `Speed` 4 refusés faute de coût suffisant ; le motif impair doit rester surveillé après une future expansion.
+Prochaine étape : laisser l'AFK produire, puis retenter les achats avec `tfwr_live_state` avant chaque action.
+
 ## Modèle
 
 ```text

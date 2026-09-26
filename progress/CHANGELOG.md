@@ -21,3 +21,12 @@
 - Corrigé le parcours de grille : le terrain est torique sur les axes vertical et horizontal.
 - Débloqué `Variables`, `Functions` et `Speed` niveau 2.
 - Mesure complète validée : couverture `9/9`, `4` wraps détectés, `+9` carottes et `+2` bois nets sur 12 secondes.
+
+## 2026-09-26 — progression AFK
+
+- Ajout d'une boucle `while True` sûre pour la ferme AFK, avec couverture torique complète.
+- Corrigé la détection après récolte : l'herbe reste une entité `Grass`, donc le script suit désormais le flag de récolte pour replanter.
+- Débloqué `Expand` niveau 3 puis `Trees`, `Speed` niveau 3 et `Watering` niveaux 1 à 3 via MCP.
+- Débloqué `Expand` niveau 4 : la grille active est passée à `6×6`.
+- Motif d'arbres espacé selon la parité pour les tailles paires, et motif sans collision de bord pour les tailles impaires.
+- Rendement observé en AFK : `1 569` bois et `110` carottes avant la tentative d'Expand 5 ; `Speed` 4 et `Expand` 5 restent hors budget.
