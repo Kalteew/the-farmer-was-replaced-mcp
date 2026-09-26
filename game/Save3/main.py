@@ -178,6 +178,70 @@ def needs_gold():
                         return True
     return False
 
+def needs_bones():
+    for unlock in [Unlocks.Polyculture, Unlocks.The_Farmers_Remains]:
+        cost = get_cost(unlock)
+        if cost != None:
+            for item in cost:
+                if item == Items.Bone:
+                    if num_items(Items.Bone) < cost[item]:
+                        return True
+    return False
+
+def run_dinosaur():
+    if num_unlocked(Unlocks.Dinosaurs) <= 0:
+        return
+    if not needs_bones():
+        return
+
+    size = get_world_size()
+    if num_items(Items.Cactus) < size * 4:
+        return
+
+    clear()
+    go_to(0, 0)
+    change_hat(Hats.Dinosaur_Hat)
+
+    target_x = get_pos_x()
+    target_y = get_pos_y()
+    for step in range(size * size * 4):
+        if get_entity_type() == Entities.Apple:
+            next_x, next_y = measure()
+            target_x = next_x
+            target_y = next_y
+
+        moved = False
+        current_x = get_pos_x()
+        current_y = get_pos_y()
+        if current_x < target_x:
+            if can_move(East):
+                move(East)
+                moved = True
+        elif current_x > target_x:
+            if can_move(West):
+                move(West)
+                moved = True
+        elif current_y < target_y:
+            if can_move(North):
+                move(North)
+                moved = True
+        elif current_y > target_y:
+            if can_move(South):
+                move(South)
+                moved = True
+
+        if not moved:
+            for direction in [North, East, South, West]:
+                if can_move(direction):
+                    move(direction)
+                    moved = True
+                    break
+
+        if not moved:
+            break
+
+    change_hat(Hats.Gold_Hat)
+
 def sort_cactus(side):
     for row in range(side):
         for pass_index in range(side):
