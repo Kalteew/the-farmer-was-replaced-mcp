@@ -154,6 +154,12 @@ def can_afford(cost):
             return False
     return True
 
+def cactus_inputs_missing():
+    cost = get_cost(Entities.Cactus)
+    if cost == None:
+        return False
+    return not can_afford(cost)
+
 def needs_cactus():
     if num_unlocked(Unlocks.Cactus) <= 1:
         return False
@@ -346,6 +352,8 @@ while True:
     seed_target = seed_target + size * size
 
     cactus_needed = needs_cactus()
+    if cactus_inputs_missing():
+        cactus_needed = False
     if cactus_needed and not cactus_mode:
         cactus_mode = True
         pumpkin_mode = False
