@@ -86,3 +86,11 @@
 - Mesuré un run borné de 20 secondes : environ `59,84` carottes/min et `257,31` foin/min ; le MCP a correctement signalé l'arrêt de mesure et le script a été relancé par raccourci fiable.
 - Ajouté la fertilisation ciblée des cases d'herbe uniquement, afin de générer de la substance étrange sans réduire le rendement des carottes et citrouilles.
 - Débloqué `Timing` dès que le premier millier de citrouilles a été reconstitué ; le script reste actif, sans sortie d'erreur.
+
+## 2026-09-26 — labyrinthes et premier drone parallèle
+
+- Les arbres espacés fertilisés ont produit plus de `1 000` substances étranges ; `Mazes` niveau 1 puis `Utilities` ont été achetés via MCP.
+- Ajouté un buisson dédié : le drone crée un labyrinthe 12×12 avec `12` substances, suit les murs, récolte le trésor et reprend la ferme.
+- Vérification live : plusieurs labyrinthes ont produit `2 176` or sans erreur, avec la simulation active.
+- Acheté `Megafarm` niveau 1 à `2 000` or.
+- Ajouté un second drone temporaire pour entretenir les 18 arbres espacés pendant le bootstrap ; le premier drone conserve la boucle carottes/citrouilles et les labyrinthes.

@@ -222,6 +222,16 @@ Progression : le bootstrap a repris après l'achat de Timing ; le prochain petit
 Blocage ou risque : aucun blocage ; la mesure MCP arrête volontairement le script, donc chaque mesure doit être suivie d'une relance et d'une vérification.
 Prochaine étape : accumuler la substance étrange avec l'herbe fertilisée, puis ouvrir `Mazes` dès que le seuil réel est atteint.
 
+Date : 2026-09-26
+Sauvegarde : Save3
+Objectif : automatiser la branche labyrinthes puis exploiter `Megafarm`.
+Script : game/Save3/main.py
+Action : corrigé la source de substance avec 18 arbres espacés fertilisés ; acheté `Mazes` niveau 1, `Utilities` et `Megafarm` niveau 1 ; ajouté `solve_maze()` et un second drone d'entretien des arbres.
+Résultat observé : le labyrinthe 12×12 est créé et résolu en boucle ; l'or a dépassé `2 000` (`2 176` au dernier contrôle), deux drones sont actifs, simulation non pausée et sortie live vide.
+Progression : le prochain gros embranchement est `Cactus` niveau 2 à `20 000` citrouilles, puis `Mazes` niveau 2 à `12 000` cactus ; `Simulation` coûte `5 000` or et `Megafarm` niveau 2 coûte `8 000` or.
+Blocage ou risque : aucun blocage ; le catalogue réel montre que les coûts des niveaux avancés changent de ressource, donc chaque achat doit rester précédé d'une lecture live.
+Prochaine étape : maintenir les labyrinthes, acheter `Simulation`/`Megafarm` selon le catalogue, puis passer au champ de cactus triés dès que `Cactus` 2 est abordable.
+
 ## Modèle
 
 ```text
