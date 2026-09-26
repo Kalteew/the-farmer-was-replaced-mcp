@@ -10,14 +10,14 @@
 
 ## Phase 1 — Prise en main contrôlée
 
-- [ ] Vérifier l'état MCP de `Save3`.
-- [ ] Confirmer le script réellement chargé par le jeu.
-- [ ] Exécuter un test court et récupérable.
-- [ ] Confirmer la lecture de la sortie et des erreurs.
+- [x] Vérifier l'état MCP de `Save3`.
+- [x] Confirmer le script réellement chargé par le jeu.
+- [x] Exécuter un test court et récupérable.
+- [x] Confirmer la lecture de la sortie et des erreurs.
 
 ## Phase 2 — Début de progression
 
-- [ ] Automatiser la récolte adaptée au terrain actuel.
+- [x] Automatiser une récolte bornée adaptée au terrain actuel.
 - [ ] Débloquer les premières constructions de langage.
 - [ ] Débloquer mouvement et sens.
 - [ ] Mettre en place un balayage de grille robuste.
