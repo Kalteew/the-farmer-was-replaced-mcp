@@ -5,11 +5,11 @@ Dernière mise à jour : 2026-09-26
 ## Partie
 
 - Sauvegarde active : `Save3`
-- Phase : progression AFK active sur une ferme 6×6
-- Ressources observées avant le dernier run : `73 hay`, `769 wood`, `110 carrot`, `3 water`
-- Déblocages observés : `Loops`, `Speed` niveau 3, `Plant`, `Expand` niveau 4, `Carrots`, `Trees`, `Watering` niveau 3, `Operators`, `Senses`, `Variables`, `Functions`
+- Phase : progression AFK active sur une ferme 8×8
+- Ressources observées : `158 hay`, `5 150 wood`, `153 carrot`, `80 pumpkin`
+- Déblocages observés : `Loops`, `Speed` niveau 3, `Plant`, `Expand` niveau 5, `Carrots`, `Trees`, `Pumpkins`, `Watering` niveau 4, `Operators`, `Senses`, `Variables`, `Functions`
 - Script principal : `game/Save3/main.py`
-- Boucle : réserve de foin, carottes, arbres espacés, buissons de remplissage, arrosage sous 50 %
+- Boucle : 8 cases de foin, 15 parcelles de carottes, arbres espacés, buissons de remplissage, arrosage sous 50 %
 - File Watcher : activé dans `options.txt`
 
 ## Infrastructure
@@ -22,8 +22,8 @@ Dernière mise à jour : 2026-09-26
 
 ## À faire ensuite
 
-1. Laisser tourner l'AFK pour financer `Speed` niveau 4 et `Expand` niveau 5.
-2. Adapter le motif d'arbres si une prochaine expansion donne une taille impaire.
+1. Laisser tourner l'AFK pour financer `Speed` niveau 4 et `Sunflowers`.
+2. Repasser ponctuellement en carré de citrouilles pour financer l'expansion suivante.
 3. Continuer les achats via `tfwr_unlock` après lecture de l'état live.
 
 Note : le parcours fiable exploite le wrap horizontal et vertical ; il parcourt chaque case exactement une fois et revient au point de départ.

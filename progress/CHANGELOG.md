@@ -30,3 +30,7 @@
 - Débloqué `Expand` niveau 4 : la grille active est passée à `6×6`.
 - Motif d'arbres espacé selon la parité pour les tailles paires, et motif sans collision de bord pour les tailles impaires.
 - Rendement observé en AFK : `1 569` bois et `110` carottes avant la tentative d'Expand 5 ; `Speed` 4 et `Expand` 5 restent hors budget.
+- La méga-ferme de citrouilles a produit `216` citrouilles par récolte et permis `Expand` niveau 5.
+- La grille est passée à `8×8` ; le script a été reconverti en ferme mixte de récupération.
+- Optimisation du débit : `8` cases de foin, `15` parcelles de carottes et parité torique pour les arbres.
+- Débloqué `Watering` niveau 4 et `Pumpkins` niveau 1 ; le stock observé a atteint `5 150` bois, `153` carottes et `158` foin.

@@ -42,6 +42,16 @@ Progression : la ferme est désormais conçue pour tourner en AFK et financer le
 Blocage ou risque : `Expand` 5 et `Speed` 4 refusés faute de coût suffisant ; le motif impair doit rester surveillé après une future expansion.
 Prochaine étape : laisser l'AFK produire, puis retenter les achats avec `tfwr_live_state` avant chaque action.
 
+Date : 2026-09-26 13:00
+Sauvegarde : Save3
+Objectif : exploiter les citrouilles puis accélérer la récupération de carottes.
+Script : game/Save3/main.py
+Action : déblocage MCP de `Watering` 4, `Pumpkins` 1 et `Expand` 5 ; ferme citrouilles 6×6 avec récolte différée jusqu'à maturité complète ; retour en ferme mixte 8×8 avec 8 réserves de foin et 15 parcelles carottes.
+Résultat observé : méga-récoltes de `216` citrouilles ; grille 8×8 stable avec arbres, buissons et carottes ; dernier état à `5 150` bois, `153` carottes et `158` foin, drone en `action`.
+Progression : le débit carottes a été multiplié par environ trois par rapport au motif à 5 parcelles.
+Blocage ou risque : `Speed` 4 et `Sunflowers` demandent `500` carottes ; la ferme mixte doit continuer à tourner.
+Prochaine étape : laisser l'AFK atteindre `500` carottes, acheter `Speed` 4 puis `Sunflowers` via MCP.
+
 ## Modèle
 
 ```text
