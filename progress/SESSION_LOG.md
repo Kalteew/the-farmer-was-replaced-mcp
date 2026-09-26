@@ -102,6 +102,16 @@ Progression : la prochaine expansion ne nécessitera pas de réécriture du scri
 Blocage ou risque : le rythme dépend des cycles de croissance et des plants morts ; le script les remplace sans intervention.
 Prochaine étape : atteindre `8 000` citrouilles et acheter `Expand 6` via l'automatisation.
 
+Date : 2026-09-26
+Sauvegarde : Save3
+Objectif : financer l'expansion avec le carré AFK.
+Script : game/Save3/main.py
+Action : achat MCP de `Watering` niveau 6, puis surveillance de deux cycles de méga-récolte.
+Résultat observé : `5 264` citrouilles, `1 261` eau, `1 696` puissance, drone actif ; il reste `2 736` citrouilles avant `Expand 6`.
+Progression : le palier d'expansion est maintenant proche et l'automatisation peut l'acheter dès que le seuil est franchi.
+Blocage ou risque : le cycle de croissance suivant peut varier selon les citrouilles mortes ; leur remplacement est automatique.
+Prochaine étape : acheter `Expand 6`, puis vérifier le passage automatique du carré à 8×8.
+
 ## Modèle
 
 ```text

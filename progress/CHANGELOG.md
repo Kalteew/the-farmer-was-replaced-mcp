@@ -57,3 +57,5 @@
 - Première méga-récolte observée : `1 808` citrouilles ; la ferme continue de remplir le carré pour les suivantes.
 - Rendu le carré dynamique (`taille de grille - 2`) : après `Expand 6`, le script passera automatiquement au carré 8×8.
 - Nouvelle récolte observée à `3 536` citrouilles, avec le bonus solaire toujours actif.
+- Acheté `Watering` niveau 6 pour `51 200` bois ; la production d'eau reste confortable.
+- Nouvelle méga-récolte observée à `5 264` citrouilles ; il reste `2 736` citrouilles avant `Expand 6`.
