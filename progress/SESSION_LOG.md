@@ -192,6 +192,16 @@ Progression : le rendement et la vitesse restent stables après la dernière cor
 Blocage ou risque : aucun achat disponible avant `64 000` citrouilles.
 Prochaine étape : poursuivre l'AFK et acheter `Expand 7` dès le seuil atteint.
 
+Date : 2026-09-26
+Sauvegarde : Save3
+Objectif : poursuivre l'accumulation sans nouvelle modification.
+Script : game/Save3/main.py
+Action : vérification live de plusieurs passes carottes/citrouilles avec 10 tournesols conservés.
+Résultat observé : `18 328` citrouilles, `7 345` foin, `438` puissance et drone actif ; aucune sortie d'erreur.
+Progression : la ferme reste stable et continue vers le seuil `64 000`.
+Blocage ou risque : aucun achat disponible actuellement.
+Prochaine étape : laisser l'AFK atteindre `Expand 7`.
+
 ## Modèle
 
 ```text
