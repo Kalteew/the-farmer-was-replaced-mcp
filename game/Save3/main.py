@@ -1,6 +1,9 @@
 # Ferme AFK adaptative : bootstrap de carottes puis carré de citrouilles.
 size = get_world_size()
-seed_target = (size - 1) * (size - 1)
+pumpkin_side = 6
+if size < 7:
+    pumpkin_side = size - 1
+seed_target = pumpkin_side * pumpkin_side
 pumpkin_cost = get_cost(Entities.Pumpkin)
 if pumpkin_cost != None:
     for item in pumpkin_cost:
@@ -267,7 +270,9 @@ def run_cactus_phase():
 
 while True:
     size = get_world_size()
-    pumpkin_side = size - 1
+    pumpkin_side = 6
+    if size < 7:
+        pumpkin_side = size - 1
     seed_target = pumpkin_side * pumpkin_side
     pumpkin_cost = get_cost(Entities.Pumpkin)
     if pumpkin_cost != None:
@@ -434,14 +439,25 @@ while True:
                         pumpkin_plot = True
 
                 sunflower_plot = False
-                if x >= pumpkin_side:
-                    if y < 5:
+                if x == size - 1:
+                    if y < 10:
                         sunflower_plot = True
+
+                tree_plot = False
+                tree_column = -1
+                if x == size - 2:
+                    tree_column = 0
+                elif x == size - 4:
+                    tree_column = 1
+                elif x == size - 6:
+                    tree_column = 2
+                if tree_column >= 0:
+                    if y % 2 == 0:
+                        tree_plot = True
 
                 grass_plot = False
                 if x >= pumpkin_side:
-                    if y >= 5:
-                        grass_plot = True
+                    grass_plot = True
 
                 if maze_plot and num_unlocked(Unlocks.Mazes) > 0 and needs_gold():
                     run_maze()
@@ -481,6 +497,32 @@ while True:
                                         pumpkin_ready = False
                                 else:
                                     pumpkin_ready = False
+                elif tree_plot:
+                    entity = get_entity_type()
+                    if entity == None:
+                        if get_ground_type() == Grounds.Grassland:
+                            till()
+                        if num_items(Items.Wood) > 0:
+                            if num_items(Items.Hay) > 0:
+                                plant(Entities.Tree)
+                    elif entity == Entities.Tree:
+                        if num_items(Items.Fertilizer) > 0:
+                            use_item(Items.Fertilizer)
+                        if can_harvest():
+                            harvest()
+                        if get_entity_type() == None:
+                            if num_items(Items.Wood) > 0:
+                                if num_items(Items.Hay) > 0:
+                                    plant(Entities.Tree)
+                    else:
+                        if can_harvest():
+                            harvest()
+                        if get_ground_type() == Grounds.Grassland:
+                            till()
+                        if get_entity_type() == None:
+                            if num_items(Items.Wood) > 0:
+                                if num_items(Items.Hay) > 0:
+                                    plant(Entities.Tree)
                 elif sunflower_plot:
                     if get_ground_type() == Grounds.Grassland:
                         till()
@@ -522,6 +564,7 @@ while True:
             pumpkin_mature_passes = 0
 
         if pumpkin_mature_passes >= 2:
+            pumpkin_before_harvest = num_items(Items.Pumpkin)
             for column in range(size):
                 for row in range(size):
                     x = get_pos_x()
@@ -532,7 +575,10 @@ while True:
                                 harvest()
                 move(North)
             move(East)
-            carrot_mode = True
-            pumpkin_mode = False
-            pumpkin_mature_passes = 0
-            clear()
+            if num_items(Items.Pumpkin) > pumpkin_before_harvest:
+                carrot_mode = True
+                pumpkin_mode = False
+                pumpkin_mature_passes = 0
+                clear()
+            else:
+                pumpkin_mature_passes = 0
