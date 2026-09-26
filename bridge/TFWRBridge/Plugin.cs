@@ -125,10 +125,48 @@ public sealed class TfwrBridgePlugin : BaseUnityPlugin
             case "catalog": return CatalogJson();
             case "grid": return GridJson();
             case "run": return RunJson();
+            case "stop": return StopJson();
             default:
+                if (path.StartsWith("unlock/", StringComparison.OrdinalIgnoreCase))
+                    return UnlockJson(Uri.UnescapeDataString(path.Substring("unlock/".Length)));
                 if (path.StartsWith("load/", StringComparison.OrdinalIgnoreCase)) return LoadJson(path.Substring("load/".Length));
                 return ErrorJson("Unknown endpoint: /" + path);
         }
+    }
+
+    private string UnlockJson(string requestedName)
+    {
+        var sim = MainSim.Inst;
+        if (sim == null) return ErrorJson("Le jeu n'est pas chargé.");
+        var unlock = FindUnlock(requestedName);
+        if (unlock == null) return ErrorJson("Déblocage introuvable : " + requestedName);
+
+        var name = Convert.ToString(GetField(unlock, "unlockName")) ?? requestedName;
+        var success = sim.UnlockOrUpgrade(unlock);
+        return "{\"ok\":true,\"action\":\"unlock\",\"unlock\":" + JsonString(name)
+            + ",\"success\":" + JsonBool(success)
+            + ",\"level\":" + sim.NumUnlocked(name) + "}";
+    }
+
+    private static UnlockSO FindUnlock(string requestedName)
+    {
+        var candidate = (requestedName ?? string.Empty).Trim();
+        if (candidate.StartsWith("Unlocks.", StringComparison.OrdinalIgnoreCase))
+            candidate = candidate.Substring("Unlocks.".Length);
+        foreach (var unlock in ResourceManager.GetAllUnlocks() ?? Enumerable.Empty<UnlockSO>())
+        {
+            var name = Convert.ToString(GetField(unlock, "unlockName"));
+            if (string.Equals(name, candidate, StringComparison.OrdinalIgnoreCase)) return unlock;
+        }
+        return null;
+    }
+
+    private string StopJson()
+    {
+        var sim = MainSim.Inst;
+        if (sim == null) return ErrorJson("Le jeu n'est pas chargé.");
+        sim.StopMainExecution();
+        return "{\"ok\":true,\"action\":\"stop\"}";
     }
 
     private string LoadJson(string saveName)

@@ -39,13 +39,21 @@ La documentation de référence locale est dans `docs/LOCAL_KNOWLEDGE.md`. Les s
 
 - `tfwr_get_state`, `tfwr_list_saves`, `tfwr_capture_screen`
 - `tfwr_bridge_health`, `tfwr_load_save`, `tfwr_live_state`, `tfwr_live_inventory`
-- `tfwr_live_unlocks`, `tfwr_live_catalog`, `tfwr_live_grid`
+- `tfwr_live_unlocks`, `tfwr_unlock`, `tfwr_live_catalog`, `tfwr_live_grid`
 - `tfwr_read_script`, `tfwr_write_script`
-- `tfwr_run`, `tfwr_stop`, `tfwr_pause`
+- `tfwr_run`, `tfwr_stop`, `tfwr_pause`, `tfwr_save`
 - `tfwr_get_output`, `tfwr_read_reference`
 - `tfwr_list_recipes`, `tfwr_recipe_tree`, `tfwr_add_recipe`
 
 `tfwr_write_script` crée une copie dans `.mcp-backups` avant d'écraser un fichier existant. `tfwr_run` exécute directement le script via le pont BepInEx ; F5 reste un secours si le pont n'est pas disponible.
+
+### Actions en jeu
+
+- `tfwr_unlock` achète ou améliore un déblocage par son nom (`Loops` ou `Unlocks.Loops`).
+- `tfwr_stop` arrête directement le script actif via le pont, avec repli sur Maj+F5.
+- `tfwr_save` envoie Ctrl+S à la fenêtre du jeu.
+
+Pour une action de progression, lire d'abord `tfwr_live_unlocks` et l'état réel du jeu, puis utiliser `tfwr_unlock`. Les coûts restent calculés par le jeu.
 
 `tfwr_get_state` lit le JSON de sauvegarde (déblocages, inventaire sérialisé, terrain et entités quand le jeu les a enregistrés). `tfwr_capture_screen` fournit en plus une image de l'interface réelle. Les recettes et coûts documentés sont une base locale : les coûts dynamiques du jeu devront être confirmés avec `get_cost()` avant une action importante.
 

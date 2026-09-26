@@ -1,6 +1,6 @@
 param(
   [Parameter(Mandatory = $true)]
-  [ValidateSet('F5', 'Shift+F5', 'Ctrl+F5')]
+  [ValidateSet('F5', 'Shift+F5', 'Ctrl+F5', 'Ctrl+S')]
   [string] $Key
 )
 
@@ -31,15 +31,23 @@ if ($null -eq $process) {
 Start-Sleep -Milliseconds 100
 
 $vkF5 = [byte]0x74
+$vkS = [byte]0x53
 $vkShift = [byte]0x10
 $vkControl = [byte]0x11
 $keyUp = [uint32]0x0002
 
-if ($Key -eq 'Shift+F5') { [TfwrNative]::keybd_event($vkShift, 0, 0, [UIntPtr]::Zero) }
-if ($Key -eq 'Ctrl+F5') { [TfwrNative]::keybd_event($vkControl, 0, 0, [UIntPtr]::Zero) }
-[TfwrNative]::keybd_event($vkF5, 0, 0, [UIntPtr]::Zero)
-[TfwrNative]::keybd_event($vkF5, 0, $keyUp, [UIntPtr]::Zero)
-if ($Key -eq 'Shift+F5') { [TfwrNative]::keybd_event($vkShift, 0, $keyUp, [UIntPtr]::Zero) }
-if ($Key -eq 'Ctrl+F5') { [TfwrNative]::keybd_event($vkControl, 0, $keyUp, [UIntPtr]::Zero) }
+if ($Key -eq 'Ctrl+S') {
+  [TfwrNative]::keybd_event($vkControl, 0, 0, [UIntPtr]::Zero)
+  [TfwrNative]::keybd_event($vkS, 0, 0, [UIntPtr]::Zero)
+  [TfwrNative]::keybd_event($vkS, 0, $keyUp, [UIntPtr]::Zero)
+  [TfwrNative]::keybd_event($vkControl, 0, $keyUp, [UIntPtr]::Zero)
+} else {
+  if ($Key -eq 'Shift+F5') { [TfwrNative]::keybd_event($vkShift, 0, 0, [UIntPtr]::Zero) }
+  if ($Key -eq 'Ctrl+F5') { [TfwrNative]::keybd_event($vkControl, 0, 0, [UIntPtr]::Zero) }
+  [TfwrNative]::keybd_event($vkF5, 0, 0, [UIntPtr]::Zero)
+  [TfwrNative]::keybd_event($vkF5, 0, $keyUp, [UIntPtr]::Zero)
+  if ($Key -eq 'Shift+F5') { [TfwrNative]::keybd_event($vkShift, 0, $keyUp, [UIntPtr]::Zero) }
+  if ($Key -eq 'Ctrl+F5') { [TfwrNative]::keybd_event($vkControl, 0, $keyUp, [UIntPtr]::Zero) }
+}
 
 Write-Output "sent $Key"

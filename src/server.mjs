@@ -332,6 +332,13 @@ function register(server) {
     try { return textResult(await bridgeFetch("unlocks")); } catch (error) { return errorResult(error); }
   });
 
+  server.registerTool("tfwr_unlock", {
+    description: "Achète ou améliore directement un déblocage dans l'arbre de recherche du jeu via BepInEx.",
+    inputSchema: z.object({ unlock: z.string().min(1).describe("Exemple : Loops ou Unlocks.Loops") }),
+  }, async ({ unlock }) => {
+    try { return textResult(await bridgeFetch(`unlock/${encodeURIComponent(unlock)}`)); } catch (error) { return errorResult(error); }
+  });
+
   server.registerTool("tfwr_live_catalog", {
     description: "Lit le catalogue interne du jeu : items, objets de ferme et documentation disponible.",
     inputSchema: z.object({}),
@@ -414,7 +421,10 @@ function register(server) {
     description: "Arrête l'exécution du code dans le jeu en envoyant Maj+F5.",
     inputSchema: z.object({}),
   }, async () => {
-    try { return textResult({ action: "stop", result: await sendGameKey("Shift+F5") }); } catch (error) { return errorResult(error); }
+    try { return textResult(await bridgeFetch("stop")); } catch (firstError) {
+      try { return textResult({ action: "stop", result: await sendGameKey("Shift+F5"), bridgeError: firstError?.message ?? String(firstError) }); }
+      catch (error) { return errorResult(error); }
+    }
   });
 
   server.registerTool("tfwr_pause", {
@@ -422,6 +432,13 @@ function register(server) {
     inputSchema: z.object({}),
   }, async () => {
     try { return textResult({ action: "pause-toggle", result: await sendGameKey("Ctrl+F5") }); } catch (error) { return errorResult(error); }
+  });
+
+  server.registerTool("tfwr_save", {
+    description: "Sauvegarde la partie active avec Ctrl+S.",
+    inputSchema: z.object({}),
+  }, async () => {
+    try { return textResult({ action: "save", result: await sendGameKey("Ctrl+S") }); } catch (error) { return errorResult(error); }
   });
 
   server.registerTool("tfwr_get_output", {
