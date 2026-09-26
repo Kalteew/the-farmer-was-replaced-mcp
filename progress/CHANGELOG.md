@@ -61,3 +61,9 @@
 - Nouvelle méga-récolte observée à `5 264` citrouilles ; il reste `2 736` citrouilles avant `Expand 6`.
 - Acheté `Expand` niveau 6 à `8 000` citrouilles ; la grille live est passée de 8×8 à 12×12.
 - Vérifié que le script dynamique repart sur un carré 10×10 après l'expansion.
+
+## 2026-09-26 — bootstrap adaptatif des graines
+
+- Confirmé via la sortie live que `plant(Entities.Pumpkin)` consomme des carottes et que le carré 10×10 ne pouvait pas être rempli avec le stock restant après `Expand 6`.
+- Remplacé la boucle fixe par deux phases autonomes : 8 colonnes d'herbe et 4 colonnes de carottes pour constituer la réserve, puis carré de citrouilles dynamique avec bordure solaire.
+- La boucle rebascule en bootstrap après chaque méga-récolte si le stock de carottes est insuffisant ; vérification live réussie avec `78` citrouilles replantées et `676` carottes restantes.

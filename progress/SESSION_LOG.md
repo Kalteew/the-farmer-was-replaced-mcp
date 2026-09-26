@@ -122,6 +122,16 @@ Progression : la ferme dynamique est maintenant dimensionnée en `10×10` citrou
 Blocage ou risque : le premier cycle de croissance de la nouvelle zone est encore en cours ; aucun arrêt ni erreur observé.
 Prochaine étape : attendre la première méga-récolte 10×10 et lire le prochain coût réel de l'arbre.
 
+Date : 2026-09-26
+Sauvegarde : Save3
+Objectif : rendre la production de graines autonome après `Expand 6`.
+Script : game/Save3/main.py
+Action : diagnostic de la sortie live, bootstrap temporaire de carottes, puis remplacement par une boucle adaptative carottes/citrouilles.
+Résultat observé : le bootstrap a produit plus de `1 400` carottes avec 8 colonnes d'herbe ; la boucle a ensuite replanté `78` citrouilles sur la grille 12×12, avec `676` carottes restantes et le drone actif.
+Progression : le script sait maintenant financer les graines du carré 10×10 sans intervention manuelle après chaque méga-récolte.
+Blocage ou risque : les citrouilles mortes et les coûts de plantation allongent le cycle ; le basculement automatique les absorbe.
+Prochaine étape : laisser produire le carré 10×10, puis lire le coût réel d'`Expand 7` et l'acheter dès que possible.
+
 ## Modèle
 
 ```text
