@@ -68,37 +68,36 @@ def go_to(target_x, target_y):
     while get_pos_y() != target_y:
         move(South)
 
-def maintain_trees():
+def maintain_tree_column(tree_column):
     size = get_world_size()
-    for tree_column in range(3):
-        target_x = size - 2 - tree_column * 2
-        for target_y in range(0, size, 2):
-            go_to(target_x, target_y)
-            entity = get_entity_type()
-            if entity == None:
-                if get_ground_type() == Grounds.Grassland:
-                    till()
+    target_x = size - 2 - tree_column * 2
+    for target_y in range(0, size, 2):
+        go_to(target_x, target_y)
+        entity = get_entity_type()
+        if entity == None:
+            if get_ground_type() == Grounds.Grassland:
+                till()
+            if num_items(Items.Wood) > 0:
+                if num_items(Items.Hay) > 0:
+                    plant(Entities.Tree)
+        elif entity == Entities.Tree:
+            if num_items(Items.Fertilizer) > 0:
+                use_item(Items.Fertilizer)
+            if can_harvest():
+                harvest()
+            if get_entity_type() == None:
                 if num_items(Items.Wood) > 0:
                     if num_items(Items.Hay) > 0:
                         plant(Entities.Tree)
-            elif entity == Entities.Tree:
-                if num_items(Items.Fertilizer) > 0:
-                    use_item(Items.Fertilizer)
-                if can_harvest():
-                    harvest()
-                if get_entity_type() == None:
-                    if num_items(Items.Wood) > 0:
-                        if num_items(Items.Hay) > 0:
-                            plant(Entities.Tree)
-            else:
-                if can_harvest():
-                    harvest()
-                if get_ground_type() == Grounds.Grassland:
-                    till()
-                if get_entity_type() == None:
-                    if num_items(Items.Wood) > 0:
-                        if num_items(Items.Hay) > 0:
-                            plant(Entities.Tree)
+        else:
+            if can_harvest():
+                harvest()
+            if get_ground_type() == Grounds.Grassland:
+                till()
+            if get_entity_type() == None:
+                if num_items(Items.Wood) > 0:
+                    if num_items(Items.Hay) > 0:
+                        plant(Entities.Tree)
 
 cactus_mode = False
 
@@ -253,11 +252,17 @@ while True:
             clear()
             continue
 
-    tree_drone = None
+    tree_drones = []
+    tree_workers = 0
 
     if carrot_mode:
         if num_unlocked(Unlocks.Megafarm) > 0:
-            tree_drone = spawn_drone(maintain_trees)
+            for tree_column in range(3):
+                tree_drone = spawn_drone(maintain_tree_column, tree_column)
+                if tree_drone == None:
+                    break
+                tree_drones.append(tree_drone)
+                tree_workers = tree_workers + 1
 
         for column in range(size):
             for row in range(size):
@@ -275,7 +280,14 @@ while True:
                         sunflower_plot = True
 
                 tree_plot = False
-                if x == size - 2 or x == size - 4 or x == size - 6:
+                tree_column = -1
+                if x == size - 2:
+                    tree_column = 0
+                elif x == size - 4:
+                    tree_column = 1
+                elif x == size - 6:
+                    tree_column = 2
+                if tree_column >= tree_workers:
                     if y % 2 == 0:
                         tree_plot = True
 
@@ -298,7 +310,7 @@ while True:
                             if get_entity_type() == None:
                                 if can_afford(get_cost(Entities.Sunflower)):
                                     plant(Entities.Sunflower)
-                elif tree_plot and tree_drone == None:
+                elif tree_plot:
                     entity = get_entity_type()
                     if entity == None:
                         if get_ground_type() == Grounds.Grassland:
@@ -343,7 +355,7 @@ while True:
                 move(North)
             move(East)
 
-        if tree_drone != None:
+        for tree_drone in tree_drones:
             wait_for(tree_drone)
     else:
         pumpkin_ready = True
