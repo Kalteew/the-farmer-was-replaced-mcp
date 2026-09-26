@@ -142,6 +142,16 @@ Progression : le rendement par cycle est supérieur au carré 10×10 tout en con
 Blocage ou risque : le prochain Expand coûte `64 000` citrouilles ; le bootstrap de carottes reste nécessaire entre les récoltes.
 Prochaine étape : poursuivre les cycles adaptatifs jusqu'à `Expand 7`.
 
+Date : 2026-09-26
+Sauvegarde : Save3
+Objectif : poursuivre l'accumulation vers `Expand 7`.
+Script : game/Save3/main.py
+Action : vérification d'un cycle complet carré → méga-récolte → bootstrap de graines.
+Résultat observé : stock monté à `13 056` citrouilles ; aucune sortie d'erreur, drone actif et bascule carottes automatique.
+Progression : la ferme poursuit seule les cycles nécessaires vers `64 000` citrouilles.
+Blocage ou risque : aucun achat disponible pour le moment ; `Pumpkins` et `Expand` coûtent chacun `64 000` dans le catalogue live.
+Prochaine étape : laisser les cycles adaptatifs s'enchaîner jusqu'au prochain achat.
+
 ## Modèle
 
 ```text
