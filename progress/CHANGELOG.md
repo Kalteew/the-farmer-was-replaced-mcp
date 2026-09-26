@@ -42,3 +42,9 @@
 - Ajouté la sélection du tournesol adulte ayant le plus de pétales avant récolte, pour activer le bonus de puissance ×8.
 - Vérifié en live : `6` puissance produite, `speedFactor` passé de `5,0625` à `10,125`, drone actif sans erreur.
 - Acheté `Speed` niveau 5, `Watering` niveau 5 et `Pumpkins` niveau 2 ; le `speedFactor` live atteint `15,1875` avec la puissance active.
+
+## 2026-09-26 — reprise AFK et contrôle MCP
+
+- Corrigé `tfwr_run` pour arrêter proprement puis relancer le script avec le raccourci fiable du jeu lorsque l'appel interne répond sans réellement donner le focus à la fenêtre de code.
+- Vérifié en live la ferme mixte : `10` tournesols, `15` carottes, `15` arbres, `16` buissons et `8` cases d'herbe ; simulation active à `speedFactor 15,1875`.
+- Acheté `Pumpkins` niveau 3 puis 4 ; `Expand` niveau 6 reste la cible à `8 000` citrouilles.

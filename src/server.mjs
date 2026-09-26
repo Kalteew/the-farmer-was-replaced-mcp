@@ -284,16 +284,18 @@ async function runGame(requestedSave) {
   const save = await resolveSave(requestedSave);
   const main = scriptPath(save.folder, "main.py");
   if (!existsSync(main)) throw new Error(`main.py absent de ${save.name}. Écris-le d'abord avec tfwr_write_script.`);
-  try {
-    return { save: save.name, action: "run", control: "bepinex", result: await bridgeFetch("run") };
-  } catch (firstError) {
-    try {
-      await bridgeFetch(`load/${save.name}`);
-      return { save: save.name, action: "run", control: "bepinex", loaded: true, result: await bridgeFetch("run") };
-    } catch {
-      return { save: save.name, action: "run", control: "keyboard-fallback", result: await sendGameKey("F5"), bridgeError: firstError?.message ?? String(firstError) };
-    }
+  const requestedName = requestedSave ? save.name.toLowerCase() : null;
+  if (requestedName && (await activeSaveName()).toLowerCase() !== requestedName) {
+    await bridgeFetch(`load/${save.name}`);
+    await sleep(250);
   }
+
+  // PressExecuteOrStop peut répondre positivement sans transmettre le focus à
+  // la fenêtre de code. Arrêter puis envoyer F5 au jeu est plus fiable et
+  // évite de laisser l'AFK tourner avec un ancien script ou à l'arrêt.
+  await bridgeFetch("stop").catch(() => {});
+  await sleep(150);
+  return { save: save.name, action: "run", control: "keyboard", result: await sendGameKey("F5") };
 }
 
 function sleep(milliseconds) {

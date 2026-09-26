@@ -72,6 +72,16 @@ Progression : les trois améliorations rentables sont acquises ; `Expand` niveau
 Blocage ou risque : le stock de citrouilles est encore à `80`, donc la ferme mixte doit être remplacée temporairement par un carré de citrouilles.
 Prochaine étape : préparer puis lancer une ferme de citrouilles 8×8 sans perdre le contrôle du wrap torique.
 
+Date : 2026-09-26
+Sauvegarde : Save3
+Objectif : maintenir la partie en AFK et fiabiliser les relances MCP.
+Script : game/Save3/main.py
+Action : rechargement de Save3, reprise contrôlée de la ferme mixte, correction de `tfwr_run`, puis achats MCP de `Pumpkins` niveaux 3 et 4.
+Résultat observé : `10` tournesols, `15` carottes, `15` arbres, `16` buissons, `8` cases d'herbe ; `190 543` bois, `255` carottes, `80` citrouilles et `7,37` puissance ; simulation active à `speedFactor 15,1875`.
+Progression : l'arbre est au niveau `Pumpkins 4`, la ferme tourne de nouveau sans erreur et `Expand 6` reste le prochain palier majeur.
+Blocage ou risque : le stock de citrouilles doit remonter fortement ; le pivot 8×8 doit être validé avant de remplacer la ferme mixte.
+Prochaine étape : tester puis lancer une boucle citrouilles robuste, accumuler `8 000` citrouilles et acheter `Expand 6`.
+
 ## Modèle
 
 ```text
