@@ -55,3 +55,5 @@
 - Corrigé les citrouilles mortes : récolte du plant mort avant replantation, sinon le carré géant restait bloqué.
 - Corrigé la replantation des tournesols après récolte ; le bonus solaire reste actif (`speedFactor 15,1875`).
 - Première méga-récolte observée : `1 808` citrouilles ; la ferme continue de remplir le carré pour les suivantes.
+- Rendu le carré dynamique (`taille de grille - 2`) : après `Expand 6`, le script passera automatiquement au carré 8×8.
+- Nouvelle récolte observée à `3 536` citrouilles, avec le bonus solaire toujours actif.

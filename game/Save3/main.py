@@ -3,6 +3,7 @@ clear()
 
 while True:
     size = get_world_size()
+    pumpkin_side = size - 2
     pumpkin_ready = True
 
     for column in range(size):
@@ -11,32 +12,18 @@ while True:
             y = get_pos_y()
 
             pumpkin_plot = False
-            if x < 6:
-                if y < 6:
+            if x < pumpkin_side:
+                if y < pumpkin_side:
                     pumpkin_plot = True
 
             sunflower_plot = False
-            if x == 6:
-                if y < 5:
-                    sunflower_plot = True
-            if x == 7:
+            if x >= pumpkin_side:
                 if y < 5:
                     sunflower_plot = True
 
             grass_plot = False
-            if x == 6:
-                if y == 5:
-                    grass_plot = True
-                if y == 6:
-                    grass_plot = True
-                if y == 7:
-                    grass_plot = True
-            if x == 7:
-                if y == 5:
-                    grass_plot = True
-                if y == 6:
-                    grass_plot = True
-                if y == 7:
+            if x >= pumpkin_side:
+                if y >= 5:
                     grass_plot = True
 
             if pumpkin_plot:
@@ -97,8 +84,8 @@ while True:
             for row in range(size):
                 x = get_pos_x()
                 y = get_pos_y()
-                if x < 6:
-                    if y < 6:
+                if x < pumpkin_side:
+                    if y < pumpkin_side:
                         if can_harvest():
                             harvest()
                 move(North)

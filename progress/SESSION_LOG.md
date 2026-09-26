@@ -92,6 +92,16 @@ Progression : `Pumpkins` niveau 4 est acquis et l'automatisation AFK surveille d
 Blocage ou risque : les citrouilles mortes apparaissent aléatoirement et allongent certains cycles ; elles sont maintenant retirées automatiquement.
 Prochaine étape : accumuler `8 000` citrouilles, acheter `Expand 6`, puis adapter le carré à la nouvelle taille.
 
+Date : 2026-09-26
+Sauvegarde : Save3
+Objectif : préparer automatiquement la ferme à l'expansion suivante.
+Script : game/Save3/main.py
+Action : remplacement des coordonnées fixes par un carré de taille `get_world_size() - 2`, puis relance et vérification live.
+Résultat observé : `3 536` citrouilles, `931` puissance, `speedFactor 15,1875`, drone actif et grille actuelle toujours saine.
+Progression : la prochaine expansion ne nécessitera pas de réécriture du script ; la zone citrouilles passera de 6×6 à 8×8 automatiquement.
+Blocage ou risque : le rythme dépend des cycles de croissance et des plants morts ; le script les remplace sans intervention.
+Prochaine étape : atteindre `8 000` citrouilles et acheter `Expand 6` via l'automatisation.
+
 ## Modèle
 
 ```text
