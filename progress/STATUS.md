@@ -6,11 +6,12 @@ Dernière mise à jour : 2026-09-26
 
 - Sauvegarde active : `Save3`
 - Phase : progression AFK active sur une ferme 12×12
-- Ressources observées : `19 087 hay`, `52 326 wood`, `1 121 carrot`, `328 pumpkin`, `1 907 weird_substance`, `2 176 gold`, `1 000 water`, `1 104 fertilizer`, `419 power`
-- Déblocages observés : `Speed` niveau 5, `Expand` niveau 6, `Pumpkins` niveau 4, `Sunflowers`, `Watering` niveau 6, `Polyculture` 1, `Cactus` 1, `Fertilizer` niveau 4, `Timing`, `Utilities`, `Mazes` 1, `Megafarm` 1, `Auto_Unlock` et les primitives de navigation/scripting
+- Ressources observées : `24 200 hay`, `56 207 wood`, `328 pumpkin`, `1 403 weird_substance`, `2 648 gold`, `2 400 water`, `2 237 fertilizer`
+- Déblocages observés : `Speed` niveau 5, `Expand` niveau 6, `Pumpkins` niveau 4, `Sunflowers`, `Watering` niveau 6, `Polyculture` 1, `Cactus` 1, `Fertilizer` niveau 4, `Timing`, `Utilities`, `Mazes` 1, `Megafarm` 1, `Simulation`, `Auto_Unlock` et les primitives de navigation/scripting
 - Script principal : `game/Save3/main.py`
-- Boucle : bootstrap adaptatif (herbe + carottes + 18 arbres espacés + 10 tournesols), puis carré de citrouilles dynamique (`taille - 1`, actuellement 11×11), boucle de labyrinthes et remplacement automatique des citrouilles mortes
+- Boucle : bootstrap adaptatif (herbe + carottes + 18 arbres espacés + 10 tournesols), puis carré de citrouilles dynamique (`taille - 1`, actuellement 11×11), boucle de labyrinthes et remplacement automatique des citrouilles mortes ; le seuil de graines est limité à deux fois la surface et revient au bootstrap en cas de pénurie
 - Parallélisme : `Megafarm` niveau 1 est utilisé pour confier les arbres fertilisés à un second drone pendant le bootstrap
+- Robustesse : le script attend maintenant réellement la maturation après chaque replantation de citrouille et utilise les coûts réels pour planter les tournesols
 - File Watcher : activé dans `options.txt`
 
 ## Infrastructure
@@ -23,7 +24,7 @@ Dernière mise à jour : 2026-09-26
 
 ## À faire ensuite
 
-1. Laisser la ferme et les labyrinthes produire l’or jusqu’à `Simulation` (`5 000`) puis `Megafarm` 2 (`8 000`).
+1. Laisser la ferme et les labyrinthes produire l’or jusqu’à `Megafarm` 2 (`8 000`).
 2. Accumuler `20 000` citrouilles pour `Cactus` 2, puis produire les `12 000` cactus nécessaires à `Mazes` 2.
 3. Reconfigurer ensuite le champ en cactus triés, puis viser `Expand 7` à `64 000` citrouilles et `Pumpkins 5` à `64 000` carottes.
 

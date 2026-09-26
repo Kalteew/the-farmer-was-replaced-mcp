@@ -232,6 +232,16 @@ Progression : le prochain gros embranchement est `Cactus` niveau 2 à `20 000` c
 Blocage ou risque : aucun blocage ; le catalogue réel montre que les coûts des niveaux avancés changent de ressource, donc chaque achat doit rester précédé d'une lecture live.
 Prochaine étape : maintenir les labyrinthes, acheter `Simulation`/`Megafarm` selon le catalogue, puis passer au champ de cactus triés dès que `Cactus` 2 est abordable.
 
+Date : 2026-09-26
+Sauvegarde : Save3
+Objectif : supprimer les faux blocages de la boucle et préparer le prochain palier de cultures.
+Script : game/Save3/main.py
+Action : acheté `Simulation` niveau 1 ; seuil de graines réduit à `2 × surface` ; pénurie de carottes reliée au bootstrap ; replantation de citrouilles marquée non prête ; coûts de tournesol lus dynamiquement ; mode cactus trié ajouté pour `Cactus` 2.
+Résultat observé : simulation active, sortie live vide après relance et contrôle prolongé ; le labyrinthe continue de produire de l'or (`2 648` au dernier contrôle) et deux drones restent disponibles.
+Progression : `Cactus` 2 coûte `20 000` citrouilles, `Mazes` 2 coûte `12 000` cactus, `Megafarm` 2 coûte `8 000` or ; les arbres fertilisés continuent d'alimenter la branche or.
+Blocage ou risque : aucun blocage ; le cycle de reconstruction est lent lorsque la puissance solaire est basse, mais le drone avance et aucun warning ne revient.
+Prochaine étape : laisser les carottes remonter, valider une vraie méga-récolte citrouilles, puis accumuler `20 000` citrouilles pour activer le mode cactus.
+
 ## Modèle
 
 ```text

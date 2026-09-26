@@ -94,3 +94,11 @@
 - Vérification live : plusieurs labyrinthes ont produit `2 176` or sans erreur, avec la simulation active.
 - Acheté `Megafarm` niveau 1 à `2 000` or.
 - Ajouté un second drone temporaire pour entretenir les 18 arbres espacés pendant le bootstrap ; le premier drone conserve la boucle carottes/citrouilles et les labyrinthes.
+
+## 2026-09-26 — garde-fous de production et préparation cactus
+
+- Acheté `Simulation` niveau 1 à `5 000` or, après vérification du catalogue et de l’état live.
+- Réduit le seuil de bootstrap à deux fois la surface du carré ; le script revient automatiquement aux carottes lorsque les graines manquent.
+- Corrigé la fausse détection de carré prêt : toute citrouille replantée force désormais un nouveau cycle de croissance complet.
+- Remplacé les préconditions approximatives des tournesols par `get_cost()`, supprimant le warning de ressource manquante.
+- Ajouté le mode cactus dormant : après `Cactus` niveau 2, le script construira un champ trié, récoltera la propagation carrée et produira les cactus requis par le prochain niveau de labyrinthes.
