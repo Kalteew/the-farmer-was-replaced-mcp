@@ -47,6 +47,26 @@ def maintain_carrot():
             plant_carrot()
     water()
 
+def maintain_bush():
+    entity = get_entity_type()
+    if entity == Entities.Bush:
+        if can_harvest():
+            harvest()
+        if get_entity_type() == None:
+            plant(Entities.Bush)
+    elif entity == None:
+        plant(Entities.Bush)
+
+def run_wood_bootstrap():
+    for column in range(size):
+        for row in range(size):
+            if get_entity_type() == None:
+                plant(Entities.Bush)
+            elif get_entity_type() == Entities.Bush:
+                maintain_bush()
+            move(North)
+        move(East)
+
 def maintain_tree():
     entity = get_entity_type()
     if entity == None:
@@ -439,6 +459,10 @@ def run_pumpkin_cycle():
                 run_maze()
 
 while True:
+    if num_items(Items.Wood) < 1000:
+        run_wood_bootstrap()
+        continue
+
     cactus_needed = needs_cactus()
     if cactus_inputs_missing():
         cactus_needed = False
