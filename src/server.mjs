@@ -290,6 +290,8 @@ async function runGame(requestedSave) {
     await sleep(250);
   }
 
+  await refreshScripts(save.name).catch(() => {});
+
   // PressExecuteOrStop peut répondre positivement sans transmettre le focus à
   // la fenêtre de code. Arrêter puis envoyer F5 au jeu est plus fiable et
   // évite de laisser l'AFK tourner avec un ancien script ou à l'arrêt.
