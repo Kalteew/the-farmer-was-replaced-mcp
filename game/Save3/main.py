@@ -6,6 +6,10 @@ if size < 7:
 
 cactus_mode = False
 pumpkin_mature_passes = 0
+maze_cooldown = 0
+hay_column = size - 5
+hay_floor = 5000
+wood_floor = 5000
 
 def go_to(target_x, target_y):
     while get_pos_x() != target_x:
@@ -47,6 +51,24 @@ def maintain_carrot():
             plant_carrot()
     water()
 
+def maintain_hay():
+    entity = get_entity_type()
+    if entity == Entities.Grass:
+        if can_harvest():
+            harvest()
+    elif entity == Entities.Carrot:
+        if can_harvest():
+            harvest()
+        if get_entity_type() == None:
+            if get_ground_type() == Grounds.Soil:
+                till()
+    elif entity == Entities.Pumpkin:
+        if can_harvest():
+            harvest()
+        if get_entity_type() == None:
+            if get_ground_type() == Grounds.Soil:
+                till()
+
 def maintain_bush():
     entity = get_entity_type()
     if entity == None:
@@ -72,8 +94,7 @@ def farm_bush_column(column):
 
 def spawn_bush_workers():
     workers = []
-    for offset in range(3):
-        column = size - 5 + offset * 2
+    for column in range(size - 3, size):
         worker = spawn_drone(farm_bush_column, column)
         if worker == None:
             break
@@ -83,6 +104,19 @@ def spawn_bush_workers():
 def run_wood_bootstrap():
     workers = spawn_bush_workers()
     wait_workers(workers)
+
+def farm_hay_column(column):
+    go_to(column, 0)
+    for row in range(size):
+        maintain_hay()
+        move(North)
+
+def run_hay_cycle():
+    worker = spawn_drone(farm_hay_column, hay_column)
+    if worker == None:
+        farm_hay_column(hay_column)
+    else:
+        wait_for(worker)
 
 def maintain_tree():
     entity = get_entity_type()
@@ -206,6 +240,17 @@ def run_maze():
     if get_entity_type() == Entities.Bush:
         use_item(Items.Weird_Substance, amount)
         solve_maze()
+
+def maybe_run_maze():
+    global maze_cooldown
+    if maze_cooldown > 0:
+        maze_cooldown = maze_cooldown - 1
+        return
+    if num_unlocked(Unlocks.Mazes) > 0:
+        if needs_gold():
+            go_to(size - 1, size - 1)
+            run_maze()
+            maze_cooldown = 8
 
 def needs_gold():
     for unlock in [Unlocks.Simulation, Unlocks.Megafarm]:
@@ -344,10 +389,7 @@ def run_cactus_phase():
                             return
 
     if cactus_cycle_complete:
-        go_to(size - 1, size - 1)
-        if num_unlocked(Unlocks.Mazes) > 0:
-            if needs_gold():
-                run_maze()
+        maybe_run_maze()
 
 def pumpkin_ready_cell():
     entity = get_entity_type()
@@ -374,13 +416,14 @@ def pumpkin_ready_cell():
     return False
 
 def carrot_target():
-    target = pumpkin_side * pumpkin_side
-    cost = get_cost(Entities.Pumpkin)
-    if cost != None:
-        for item in cost:
-            if item == Items.Carrot:
-                target = target * cost[item]
-    return target + size * size
+    target = 25000
+    required = pumpkin_side * pumpkin_side * 2
+    if target < required:
+        target = required
+    return target
+
+def pumpkin_target():
+    return 130000
 
 def needs_cactus():
     if num_unlocked(Unlocks.Cactus) <= 1:
@@ -408,7 +451,9 @@ def run_carrot_cycle():
             y = get_pos_y()
             delegated = x < 3
             if not delegated:
-                if x == size - 1 and y < 10:
+                if x == hay_column:
+                    maintain_hay()
+                elif x == size - 1 and y < 10:
                     maintain_sunflower()
                 elif tree_slot(x, y):
                     maintain_tree()
@@ -439,6 +484,8 @@ def run_pumpkin_cycle():
                     pumpkin_count = pumpkin_count + 1
             elif tree_slot(x, y):
                 maintain_tree()
+            elif x == hay_column:
+                maintain_hay()
             elif x == size - 1 and y < 10:
                 maintain_sunflower()
             elif x < pumpkin_side:
@@ -470,14 +517,17 @@ def run_pumpkin_cycle():
             pumpkin_mature_passes = 0
     wait_workers(workers)
     if pumpkin_ready:
-        if num_unlocked(Unlocks.Mazes) > 0:
-            if needs_gold():
-                go_to(size - 1, size - 1)
-                run_maze()
+        maybe_run_maze()
 
 while True:
-    if num_items(Items.Wood) < 1000:
+    if num_items(Items.Hay) < hay_floor:
+        run_hay_cycle()
+    elif num_items(Items.Wood) < wood_floor:
         run_wood_bootstrap()
+    elif num_items(Items.Carrot) < carrot_target():
+        run_carrot_cycle()
+    elif num_items(Items.Pumpkin) < pumpkin_target():
+        run_pumpkin_cycle()
     else:
         cactus_needed = needs_cactus()
         if cactus_inputs_missing():
@@ -494,7 +544,4 @@ while True:
                 cactus_mode = False
                 pumpkin_mature_passes = 0
 
-            if num_items(Items.Carrot) < carrot_target():
-                run_carrot_cycle()
-            else:
-                run_pumpkin_cycle()
+            run_pumpkin_cycle()
