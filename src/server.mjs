@@ -292,12 +292,21 @@ async function runGame(requestedSave) {
 
   await refreshScripts(save.name).catch(() => {});
 
-  // PressExecuteOrStop peut répondre positivement sans transmettre le focus à
-  // la fenêtre de code. Arrêter puis envoyer F5 au jeu est plus fiable et
-  // évite de laisser l'AFK tourner avec un ancien script ou à l'arrêt.
+  // Arrêter puis relancer via le pont évite de dépendre du focus de la fenêtre
+  // de code et garantit que l'AFK repart avec le script courant.
   await bridgeFetch("stop").catch(() => {});
   await sleep(150);
-  return { save: save.name, action: "run", control: "keyboard", result: await sendGameKey("F5") };
+  try {
+    return { save: save.name, action: "run", control: "bepinex", result: await bridgeFetch("run") };
+  } catch (bridgeError) {
+    return {
+      save: save.name,
+      action: "run",
+      control: "keyboard",
+      result: await sendGameKey("F5"),
+      bridgeError: bridgeError?.message ?? String(bridgeError),
+    };
+  }
 }
 
 async function refreshScripts(requestedSave) {
