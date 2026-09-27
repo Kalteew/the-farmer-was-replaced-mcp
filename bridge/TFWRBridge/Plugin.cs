@@ -130,8 +130,53 @@ public sealed class TfwrBridgePlugin : BaseUnityPlugin
                 if (path.StartsWith("unlock/", StringComparison.OrdinalIgnoreCase))
                     return UnlockJson(Uri.UnescapeDataString(path.Substring("unlock/".Length)));
                 if (path.StartsWith("load/", StringComparison.OrdinalIgnoreCase)) return LoadJson(path.Substring("load/".Length));
+                if (path.StartsWith("refresh/", StringComparison.OrdinalIgnoreCase))
+                    return RefreshScriptsJson(Uri.UnescapeDataString(path.Substring("refresh/".Length)));
                 return ErrorJson("Unknown endpoint: /" + path);
         }
+    }
+
+    private string RefreshScriptsJson(string saveName)
+    {
+        if (string.IsNullOrWhiteSpace(saveName) || !saveName.StartsWith("Save", StringComparison.OrdinalIgnoreCase))
+            return ErrorJson("Nom de sauvegarde invalide.");
+
+        var sim = MainSim.Inst;
+        var workspace = GetField(sim, "workspace") as Workspace;
+        if (workspace == null) return ErrorJson("L'espace de code du jeu n'est pas disponible.");
+
+        var savePath = Saver.GetPathOfSaveDirectory(saveName);
+        if (string.IsNullOrWhiteSpace(savePath) || !Directory.Exists(savePath))
+            return ErrorJson("Dossier de sauvegarde introuvable : " + saveName);
+
+        var opened = new List<string>();
+        var loaded = new List<string>();
+        var index = 0;
+        foreach (var file in Directory.GetFiles(savePath, "*.py", SearchOption.TopDirectoryOnly))
+        {
+            var name = Path.GetFileNameWithoutExtension(file);
+            if (string.Equals(name, "__builtins__", StringComparison.OrdinalIgnoreCase)) continue;
+            if (!workspace.IsValidFileName(name)) continue;
+
+            var code = File.ReadAllText(file);
+            var codeWindows = GetField(workspace, "codeWindows") as IDictionary;
+            var codeWindow = codeWindows != null && codeWindows.Contains(name) ? codeWindows[name] as CodeWindow : null;
+            if (codeWindow != null)
+            {
+                codeWindow.Load(code);
+                loaded.Add(name);
+                continue;
+            }
+
+            var offset = new Vector2(40f * (index % 8), 40f * (index % 5));
+            workspace.OpenCodeWindow(name, code, offset, new Vector2(600f, 420f));
+            opened.Add(name);
+            index++;
+        }
+
+        return "{\"ok\":true,\"action\":\"refresh-scripts\",\"save\":" + JsonString(saveName)
+            + ",\"opened\":" + StringArrayJson(opened)
+            + ",\"loaded\":" + StringArrayJson(loaded) + "}";
     }
 
     private string UnlockJson(string requestedName)
@@ -479,6 +524,19 @@ public sealed class TfwrBridgePlugin : BaseUnityPlugin
             }
         }
         return sb.Append('"').ToString();
+    }
+
+    private static string StringArrayJson(IEnumerable<string> values)
+    {
+        var sb = new StringBuilder("[");
+        var first = true;
+        foreach (var value in values ?? Enumerable.Empty<string>())
+        {
+            if (!first) sb.Append(',');
+            first = false;
+            sb.Append(JsonString(value));
+        }
+        return sb.Append(']').ToString();
     }
 
     private static string JsonBool(object value)

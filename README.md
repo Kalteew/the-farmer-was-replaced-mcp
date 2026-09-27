@@ -40,12 +40,12 @@ La documentation de référence locale est dans `docs/LOCAL_KNOWLEDGE.md`. Les s
 - `tfwr_get_state`, `tfwr_list_saves`, `tfwr_capture_screen`
 - `tfwr_bridge_health`, `tfwr_load_save`, `tfwr_live_state`, `tfwr_live_inventory`
 - `tfwr_live_unlocks`, `tfwr_unlock`, `tfwr_live_catalog`, `tfwr_live_grid`
-- `tfwr_read_script`, `tfwr_write_script`
+- `tfwr_read_script`, `tfwr_write_script`, `tfwr_refresh_scripts`
 - `tfwr_run`, `tfwr_measure_run`, `tfwr_stop`, `tfwr_pause`, `tfwr_save`
 - `tfwr_get_output`, `tfwr_read_reference`
 - `tfwr_list_recipes`, `tfwr_recipe_tree`, `tfwr_add_recipe`
 
-`tfwr_write_script` crée une copie dans `.mcp-backups` avant d'écraser un fichier existant. `tfwr_run` exécute directement le script via le pont BepInEx ; F5 reste un secours si le pont n'est pas disponible.
+`tfwr_write_script` crée une copie dans `.mcp-backups` avant d'écraser un fichier existant. Après la création d'un nouveau module, `tfwr_refresh_scripts` l'enregistre dans l'éditeur interne du jeu sans automatiser la souris. `tfwr_run` exécute directement le script via le pont BepInEx ; F5 reste un secours si le pont n'est pas disponible.
 
 `tfwr_measure_run` exécute une passe bornée et retourne les variations d'inventaire, la productivité par minute, les positions visitées, la couverture de grille, les changements de position et les wraps détectés sur les deux axes.
 

@@ -298,6 +298,11 @@ async function runGame(requestedSave) {
   return { save: save.name, action: "run", control: "keyboard", result: await sendGameKey("F5") };
 }
 
+async function refreshScripts(requestedSave) {
+  const save = await resolveSave(requestedSave);
+  return bridgeFetch(`refresh/${encodeURIComponent(save.name)}`);
+}
+
 function sleep(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
@@ -521,6 +526,13 @@ function register(server) {
       }
       return textResult({ save: save.name, path: path.relative(save.folder, destination).replaceAll(path.sep, "/"), bytes: Buffer.byteLength(content), watcher: "enabled in current game settings" });
     } catch (error) { return errorResult(error); }
+  });
+
+  server.registerTool("tfwr_refresh_scripts", {
+    description: "Enregistre dans l'éditeur du jeu les fichiers .py de la sauvegarde, sans automatiser la souris.",
+    inputSchema: z.object({ save: z.string().regex(/^Save\d+$/i).optional().describe("Exemple : Save3") }),
+  }, async ({ save }) => {
+    try { return textResult(await refreshScripts(save)); } catch (error) { return errorResult(error); }
   });
 
   server.registerTool("tfwr_run", {
