@@ -52,9 +52,12 @@ def maintain_bush():
     if entity == None:
         plant(Entities.Bush)
     elif entity == Entities.Grass:
+        if can_harvest():
+            harvest()
         if get_ground_type() == Grounds.Grassland:
             till()
-        plant(Entities.Bush)
+        if get_entity_type() == None:
+            plant(Entities.Bush)
     elif entity == Entities.Bush:
         if can_harvest():
             harvest()
@@ -69,7 +72,8 @@ def farm_bush_column(column):
 
 def spawn_bush_workers():
     workers = []
-    for column in range(3):
+    for offset in range(3):
+        column = size - 5 + offset * 2
         worker = spawn_drone(farm_bush_column, column)
         if worker == None:
             break
