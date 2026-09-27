@@ -49,23 +49,36 @@ def maintain_carrot():
 
 def maintain_bush():
     entity = get_entity_type()
-    if entity == Entities.Bush:
+    if entity == None:
+        plant(Entities.Bush)
+    elif entity == Entities.Grass:
+        if get_ground_type() == Grounds.Grassland:
+            till()
+        plant(Entities.Bush)
+    elif entity == Entities.Bush:
         if can_harvest():
             harvest()
         if get_entity_type() == None:
             plant(Entities.Bush)
-    elif entity == None:
-        plant(Entities.Bush)
+
+def farm_bush_column(column):
+    go_to(column, 0)
+    for row in range(size):
+        maintain_bush()
+        move(North)
+
+def spawn_bush_workers():
+    workers = []
+    for column in range(3):
+        worker = spawn_drone(farm_bush_column, column)
+        if worker == None:
+            break
+        workers.append(worker)
+    return workers
 
 def run_wood_bootstrap():
-    for column in range(size):
-        for row in range(size):
-            if get_entity_type() == None:
-                plant(Entities.Bush)
-            elif get_entity_type() == Entities.Bush:
-                maintain_bush()
-            move(North)
-        move(East)
+    workers = spawn_bush_workers()
+    wait_workers(workers)
 
 def maintain_tree():
     entity = get_entity_type()
@@ -461,25 +474,23 @@ def run_pumpkin_cycle():
 while True:
     if num_items(Items.Wood) < 1000:
         run_wood_bootstrap()
-        continue
-
-    cactus_needed = needs_cactus()
-    if cactus_inputs_missing():
-        cactus_needed = False
-
-    if cactus_needed:
-        if not cactus_mode:
-            cactus_mode = True
-            pumpkin_mature_passes = 0
-            clear()
-        run_cactus_phase()
-        continue
-
-    if cactus_mode:
-        cactus_mode = False
-        pumpkin_mature_passes = 0
-
-    if num_items(Items.Carrot) < carrot_target():
-        run_carrot_cycle()
     else:
-        run_pumpkin_cycle()
+        cactus_needed = needs_cactus()
+        if cactus_inputs_missing():
+            cactus_needed = False
+
+        if cactus_needed:
+            if not cactus_mode:
+                cactus_mode = True
+                pumpkin_mature_passes = 0
+                clear()
+            run_cactus_phase()
+        else:
+            if cactus_mode:
+                cactus_mode = False
+                pumpkin_mature_passes = 0
+
+            if num_items(Items.Carrot) < carrot_target():
+                run_carrot_cycle()
+            else:
+                run_pumpkin_cycle()
