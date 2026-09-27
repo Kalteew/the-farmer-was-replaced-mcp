@@ -1,17 +1,16 @@
 # État actuel
 
-Dernière mise à jour : 2026-09-26
+Dernière mise à jour : 2026-09-27
 
 ## Partie
 
-- Sauvegarde active : `Save3`
-- Phase : progression AFK active sur une ferme 12×12
-- Ressources observées : `24 200 hay`, `56 207 wood`, `328 pumpkin`, `1 403 weird_substance`, `2 648 gold`, `2 400 water`, `2 237 fertilizer`
-- Déblocages observés : `Speed` niveau 5, `Expand` niveau 6, `Pumpkins` niveau 4, `Sunflowers`, `Watering` niveau 6, `Polyculture` 1, `Cactus` 1, `Fertilizer` niveau 4, `Timing`, `Utilities`, `Mazes` 1, `Megafarm` 1, `Simulation`, `Auto_Unlock` et les primitives de navigation/scripting
-- Script principal : `game/Save3/main.py`
-- Boucle : bootstrap adaptatif (herbe + carottes + 18 arbres espacés + 10 tournesols), puis carré de citrouilles dynamique (`taille - 1`, actuellement 11×11), boucle de labyrinthes et remplacement automatique des citrouilles mortes ; le seuil de graines est limité à deux fois la surface et revient au bootstrap en cas de pénurie
-- Parallélisme : `Megafarm` niveau 1 est utilisé pour confier les arbres fertilisés à un second drone pendant le bootstrap
-- Robustesse : le script attend maintenant réellement la maturation après chaque replantation de citrouille et utilise les coûts réels pour planter les tournesols
+- Sauvegarde active : `Solo + AI`
+- Phase : première boucle de récolte sur une ferme 1×3
+- Ressource observée : `60 hay` après lancement, contre `32` au départ
+- Déblocages observés : boucles, conditions, `can_harvest`, mouvement et directions nord/sud/est/ouest
+- Script principal : `Saves/Solo + AI/main.py`
+- Boucle : `can_harvest()` → `harvest()` → `move(North)`, répétée avec `while True`
+- Vérification live : le drone est passé en `y=1`, état `moving`, sans erreur de sortie
 - File Watcher : activé dans `options.txt`
 
 ## Infrastructure

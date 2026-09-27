@@ -2,6 +2,16 @@
 
 Les entrées détaillées commencent ici. Utiliser le format défini dans `skills/tfwr-progress/SKILL.md`.
 
+Date : 2026-09-27
+Sauvegarde : Solo + AI
+Objectif : récolter en montant en boucle.
+Script : Saves/Solo + AI/main.py
+Action : écrit puis lancé `while True: can_harvest() → harvest() → move(North)`.
+Résultat observé : foin de `32` à `60`, drone observé en mouvement à `y=1`, aucune erreur.
+Progression : première boucle active sur la ferme 1×3.
+Blocage ou risque : aucun.
+Prochaine étape : attendre la prochaine consigne.
+
 Date : 2026-09-26 10:12
 Sauvegarde : Save3
 Objectif : lancer la partie et préparer le premier déblocage.

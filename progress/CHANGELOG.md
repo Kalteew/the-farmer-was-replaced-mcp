@@ -1,5 +1,11 @@
 # Historique
 
+## 2026-09-27 — nouvelle partie Solo + AI
+
+- Créé `main.py` avec une boucle verticale de récolte : récolter si possible, monter vers le nord, recommencer.
+- Lancé la boucle via le pont MCP après rafraîchissement des scripts.
+- Vérifié une hausse du foin de `32` à `60` et un déplacement live du drone vers `y=1`.
+
 ## 2026-09-25
 
 - Mise en place du projet local The Farmer Was Replaced.
