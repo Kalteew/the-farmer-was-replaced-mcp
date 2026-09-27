@@ -94,7 +94,12 @@ def farm_bush_column(column):
 
 def spawn_bush_workers():
     workers = []
-    for column in range(size - 3, size):
+    worker_count = max_drones() - 1
+    if worker_count < 0:
+        worker_count = 0
+    if worker_count > size:
+        worker_count = size
+    for column in range(size - worker_count, size):
         worker = spawn_drone(farm_bush_column, column)
         if worker == None:
             break
@@ -111,12 +116,38 @@ def farm_hay_column(column):
         maintain_hay()
         move(North)
 
+def farm_hay_segment(column, start_y, count):
+    go_to(column, start_y)
+    for step in range(count):
+        maintain_hay()
+        if step < count - 1:
+            move(North)
+
 def run_hay_cycle():
-    worker = spawn_drone(farm_hay_column, hay_column)
-    if worker == None:
-        farm_hay_column(hay_column)
-    else:
-        wait_for(worker)
+    workers = []
+    drone_count = max_drones()
+    if drone_count < 1:
+        drone_count = 1
+    segment = size // drone_count
+    if segment < 1:
+        segment = 1
+    start_y = 0
+    for index in range(drone_count - 1):
+        count = segment
+        if index == drone_count - 2:
+            count = size - start_y - segment
+            if count < 1:
+                count = 1
+        worker = spawn_drone(farm_hay_segment, hay_column, start_y, count)
+        if worker == None:
+            break
+        workers.append(worker)
+        start_y = start_y + count
+    remaining = size - start_y
+    if remaining < 1:
+        remaining = 1
+    farm_hay_segment(hay_column, start_y, remaining)
+    wait_workers(workers)
 
 def maintain_tree():
     entity = get_entity_type()
@@ -180,7 +211,12 @@ def farm_carrot_column(column, start_y):
 
 def spawn_carrot_workers(start_y):
     workers = []
-    for column in range(3):
+    worker_count = max_drones() - 1
+    if worker_count < 0:
+        worker_count = 0
+    if worker_count > size - 1:
+        worker_count = size - 1
+    for column in range(worker_count):
         worker = spawn_drone(farm_carrot_column, column, start_y)
         if worker == None:
             break
@@ -445,11 +481,12 @@ def cactus_inputs_missing():
 
 def run_carrot_cycle():
     workers = spawn_carrot_workers(0)
+    delegated_columns = len(workers)
     for column in range(size):
         for row in range(size):
             x = get_pos_x()
             y = get_pos_y()
-            delegated = x < 3
+            delegated = x < delegated_columns
             if not delegated:
                 if x == hay_column:
                     maintain_hay()
@@ -466,6 +503,7 @@ def run_carrot_cycle():
 def run_pumpkin_cycle():
     global pumpkin_mature_passes
     workers = spawn_carrot_workers(6)
+    delegated_columns = len(workers)
     pumpkin_ready = True
     pumpkin_count = 0
 
@@ -473,7 +511,7 @@ def run_pumpkin_cycle():
         for row in range(size):
             x = get_pos_x()
             y = get_pos_y()
-            delegated = x < 3 and y >= 6
+            delegated = x < delegated_columns and y >= 6
             pumpkin_plot = x < pumpkin_side and y < pumpkin_side
             if delegated:
                 pass
