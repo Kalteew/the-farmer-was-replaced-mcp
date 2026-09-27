@@ -52,21 +52,27 @@ def maintain_carrot():
     water()
 
 def maintain_hay():
-    entity = get_entity_type()
-    if entity == Entities.Grass:
-        harvest()
-    elif entity == Entities.Carrot:
-        if can_harvest():
-            harvest()
-        if get_entity_type() == None:
-            if get_ground_type() == Grounds.Soil:
-                till()
-    elif entity == Entities.Pumpkin:
-        if can_harvest():
-            harvest()
-        if get_entity_type() == None:
-            if get_ground_type() == Grounds.Soil:
-                till()
+    while True:
+        entity = get_entity_type()
+        if entity == Entities.Grass:
+            if can_harvest():
+                harvest()
+                return
+        elif entity == Entities.Carrot:
+            if can_harvest():
+                harvest()
+            if get_entity_type() == None:
+                if get_ground_type() == Grounds.Soil:
+                    till()
+            return
+        elif entity == Entities.Pumpkin:
+            if can_harvest():
+                harvest()
+            if get_entity_type() == None:
+                if get_ground_type() == Grounds.Soil:
+                    till()
+            return
+        pass
 
 def maintain_bush():
     entity = get_entity_type()
@@ -555,4 +561,5 @@ def run_pumpkin_cycle():
     wait_workers(workers)
     if pumpkin_ready:
         maybe_run_maze()
+
 
