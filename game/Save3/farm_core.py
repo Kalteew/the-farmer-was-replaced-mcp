@@ -54,8 +54,7 @@ def maintain_carrot():
 def maintain_hay():
     entity = get_entity_type()
     if entity == Entities.Grass:
-        if can_harvest():
-            harvest()
+        harvest()
     elif entity == Entities.Carrot:
         if can_harvest():
             harvest()
@@ -556,3 +555,4 @@ def run_pumpkin_cycle():
     wait_workers(workers)
     if pumpkin_ready:
         maybe_run_maze()
+
