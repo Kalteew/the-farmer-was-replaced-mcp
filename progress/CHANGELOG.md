@@ -1,5 +1,11 @@
 # Historique
 
+## 2026-09-27 — déblocage de l'import sur Solo + AI
+
+- Produit du bois avec deux buissons puis configuré deux cases de carottes et un buisson de soutien.
+- Débloqué `Operators`, `Carrots`, `Variables` et `Functions` via le pont MCP.
+- Accumulé `84` carottes et acheté `Import` niveau 1 ; sortie live vide et partie sauvegardée.
+
 ## 2026-09-27 — nouvelle partie Solo + AI
 
 - Créé `main.py` avec une boucle verticale de récolte : récolter si possible, monter vers le nord, recommencer.

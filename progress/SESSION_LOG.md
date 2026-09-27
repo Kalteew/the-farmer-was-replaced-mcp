@@ -4,6 +4,16 @@ Les entrées détaillées commencent ici. Utiliser le format défini dans `skill
 
 Date : 2026-09-27
 Sauvegarde : Solo + AI
+Objectif : jouer jusqu'au déblocage de l'import.
+Script : Saves/Solo + AI/main.py
+Action : production de bois, déblocage des carottes, préparation de deux parcelles de carottes, puis boucle carottes/buisson.
+Résultat observé : `84` carottes, `98` bois et `168` foin ; `Import` niveau 1 acheté via MCP.
+Progression : `operators`, `carrots`, `variables`, `functions` et `import` débloqués.
+Blocage ou risque : aucun ; sortie live vide.
+Prochaine étape : reprendre avec un script utilisant `import`.
+
+Date : 2026-09-27
+Sauvegarde : Solo + AI
 Objectif : récolter en montant en boucle.
 Script : Saves/Solo + AI/main.py
 Action : écrit puis lancé `while True: can_harvest() → harvest() → move(North)`.
