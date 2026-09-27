@@ -54,23 +54,9 @@ def maintain_carrot():
 def maintain_hay():
     while True:
         entity = get_entity_type()
-        if entity == Entities.Grass:
-            if can_harvest():
-                harvest()
-                return
-        elif entity == Entities.Carrot:
-            if can_harvest():
-                harvest()
-            if get_entity_type() == None:
-                if get_ground_type() == Grounds.Soil:
-                    till()
+        if entity != Entities.Grass:
             return
-        elif entity == Entities.Pumpkin:
-            if can_harvest():
-                harvest()
-            if get_entity_type() == None:
-                if get_ground_type() == Grounds.Soil:
-                    till()
+        if harvest():
             return
         pass
 
@@ -130,28 +116,18 @@ def farm_hay_segment(column, start_y, count):
 
 def run_hay_cycle():
     workers = []
-    drone_count = max_drones()
-    if drone_count < 1:
-        drone_count = 1
-    segment = size // drone_count
-    if segment < 1:
-        segment = 1
-    start_y = 0
-    for index in range(drone_count - 1):
-        count = segment
-        if index == drone_count - 2:
-            count = size - start_y - segment
-            if count < 1:
-                count = 1
-        worker = spawn_drone(farm_hay_segment, hay_column, start_y, count)
+    worker_count = max_drones() - 1
+    if worker_count < 0:
+        worker_count = 0
+    if worker_count > size - 1:
+        worker_count = size - 1
+    for column in range(worker_count):
+        worker = spawn_drone(farm_hay_column, column)
         if worker == None:
             break
         workers.append(worker)
-        start_y = start_y + count
-    remaining = size - start_y
-    if remaining < 1:
-        remaining = 1
-    farm_hay_segment(hay_column, start_y, remaining)
+    for column in range(len(workers), size):
+        farm_hay_column(column)
     wait_workers(workers)
 
 def maintain_tree():
@@ -561,5 +537,8 @@ def run_pumpkin_cycle():
     wait_workers(workers)
     if pumpkin_ready:
         maybe_run_maze()
+
+
+
 
 
