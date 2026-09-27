@@ -39,8 +39,10 @@ function inside(parent, candidate) {
 }
 
 function saveName(value) {
-  const name = value ?? "";
-  if (!/^Save\d+$/i.test(name)) throw new Error("Nom de sauvegarde invalide. Exemple : Save3.");
+  const name = String(value ?? "").trim();
+  if (!name || name === "." || name === ".." || /[<>:"/\\|?*\u0000-\u001F]/.test(name) || /[. ]$/.test(name)) {
+    throw new Error("Nom de sauvegarde invalide. Exemple : Save3 ou Solo + AI.");
+  }
   return name;
 }
 
@@ -435,9 +437,16 @@ function register(server) {
 
   server.registerTool("tfwr_load_save", {
     description: "Charge une sauvegarde directement via le menu interne du jeu, sans automatiser un clic graphique.",
-    inputSchema: z.object({ save: z.string().regex(/^Save\d+$/i).describe("Exemple : Save3") }),
+    inputSchema: z.object({ save: z.string().min(1).describe("Exemple : Save3 ou Solo + AI") }),
   }, async ({ save }) => {
     try { return textResult(await bridgeFetch(`load/${save}`)); } catch (error) { return errorResult(error); }
+  });
+
+  server.registerTool("tfwr_new_save", {
+    description: "Crée et charge une nouvelle sauvegarde via le menu interne du jeu.",
+    inputSchema: z.object({}),
+  }, async () => {
+    try { return textResult(await bridgeFetch("new-save")); } catch (error) { return errorResult(error); }
   });
 
   server.registerTool("tfwr_live_state", {
@@ -497,7 +506,8 @@ function register(server) {
       const entries = await readdir(savesRoot, { withFileTypes: true });
       const saves = [];
       for (const entry of entries) {
-        if (!entry.isDirectory() || !/^Save\d+$/i.test(entry.name)) continue;
+        if (!entry.isDirectory()) continue;
+        try { saveName(entry.name); } catch { continue; }
         const folder = path.join(savesRoot, entry.name);
         const data = await readSaveJson(folder);
         saves.push({ name: entry.name, unlocks: data.unlocks ?? [], version: data.version ?? null, scripts: await listScripts(folder) });
@@ -541,7 +551,7 @@ function register(server) {
 
   server.registerTool("tfwr_refresh_scripts", {
     description: "Enregistre dans l'éditeur du jeu les fichiers .py de la sauvegarde, sans automatiser la souris.",
-    inputSchema: z.object({ save: z.string().regex(/^Save\d+$/i).optional().describe("Exemple : Save3") }),
+    inputSchema: z.object({ save: z.string().min(1).optional().describe("Exemple : Save3 ou Solo + AI") }),
   }, async ({ save }) => {
     try { return textResult(await refreshScripts(save)); } catch (error) { return errorResult(error); }
   });

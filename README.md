@@ -38,7 +38,7 @@ La documentation de référence locale est dans `docs/LOCAL_KNOWLEDGE.md`. Les s
 ## Outils
 
 - `tfwr_get_state`, `tfwr_list_saves`, `tfwr_capture_screen`
-- `tfwr_bridge_health`, `tfwr_load_save`, `tfwr_live_state`, `tfwr_live_inventory`
+- `tfwr_bridge_health`, `tfwr_new_save`, `tfwr_load_save`, `tfwr_live_state`, `tfwr_live_inventory`
 - `tfwr_live_unlocks`, `tfwr_unlock`, `tfwr_live_catalog`, `tfwr_live_grid`
 - `tfwr_read_script`, `tfwr_write_script`, `tfwr_refresh_scripts`
 - `tfwr_run`, `tfwr_measure_run`, `tfwr_stop`, `tfwr_pause`, `tfwr_save`
@@ -51,6 +51,7 @@ La documentation de référence locale est dans `docs/LOCAL_KNOWLEDGE.md`. Les s
 
 ### Actions en jeu
 
+- `tfwr_new_save` crée et charge une nouvelle sauvegarde via le menu interne du jeu.
 - `tfwr_unlock` achète ou améliore un déblocage par son nom (`Loops` ou `Unlocks.Loops`).
 - `tfwr_stop` arrête directement le script actif via le pont, avec repli sur Maj+F5.
 - `tfwr_save` envoie Ctrl+S à la fenêtre du jeu.

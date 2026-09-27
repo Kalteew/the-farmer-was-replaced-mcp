@@ -16,6 +16,7 @@ using UnityEngine;
 public sealed class TfwrBridgePlugin : BaseUnityPlugin
 {
     private const string Prefix = "http://127.0.0.1:17342/";
+    private static readonly char[] InvalidSaveNameCharacters = { '<', '>', ':', '"', '/', '\\', '|', '?', '*' };
     private readonly ConcurrentQueue<PendingRequest> pending = new ConcurrentQueue<PendingRequest>();
     private ManualLogSource log;
     private HttpListener listener;
@@ -126,6 +127,7 @@ public sealed class TfwrBridgePlugin : BaseUnityPlugin
             case "grid": return GridJson();
             case "run": return RunJson();
             case "stop": return StopJson();
+            case "new-save": return NewSaveJson();
             default:
                 if (path.StartsWith("unlock/", StringComparison.OrdinalIgnoreCase))
                     return UnlockJson(Uri.UnescapeDataString(path.Substring("unlock/".Length)));
@@ -138,7 +140,7 @@ public sealed class TfwrBridgePlugin : BaseUnityPlugin
 
     private string RefreshScriptsJson(string saveName)
     {
-        if (string.IsNullOrWhiteSpace(saveName) || !saveName.StartsWith("Save", StringComparison.OrdinalIgnoreCase))
+        if (!IsValidSaveName(saveName))
             return ErrorJson("Nom de sauvegarde invalide.");
 
         var sim = MainSim.Inst;
@@ -214,9 +216,24 @@ public sealed class TfwrBridgePlugin : BaseUnityPlugin
         return "{\"ok\":true,\"action\":\"stop\"}";
     }
 
+    private string NewSaveJson()
+    {
+        var sim = MainSim.Inst;
+        var menu = GetField(sim, "menu");
+        if (menu == null) return ErrorJson("Le menu du jeu n'est pas disponible.");
+
+        var chooser = GetField(menu, "saveChooser");
+        if (chooser == null) return ErrorJson("Le sélecteur de sauvegarde n'est pas disponible.");
+
+        var method = chooser.GetType().GetMethod("CreateNewSave", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        if (method == null) return ErrorJson("SaveChooser.CreateNewSave est introuvable.");
+        method.Invoke(chooser, null);
+        return "{\"ok\":true,\"action\":\"new-save\"}";
+    }
+
     private string LoadJson(string saveName)
     {
-        if (string.IsNullOrWhiteSpace(saveName) || !saveName.StartsWith("Save", StringComparison.OrdinalIgnoreCase))
+        if (!IsValidSaveName(saveName))
             return ErrorJson("Nom de sauvegarde invalide.");
         var sim = MainSim.Inst;
         var menu = GetField(sim, "menu");
@@ -227,6 +244,14 @@ public sealed class TfwrBridgePlugin : BaseUnityPlugin
         var play = menu.GetType().GetMethod("Play", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         play?.Invoke(menu, null);
         return "{\"ok\":true,\"action\":\"load\",\"save\":" + JsonString(saveName) + "}";
+    }
+
+    private static bool IsValidSaveName(string saveName)
+    {
+        if (string.IsNullOrWhiteSpace(saveName) || saveName == "." || saveName == "..") return false;
+        if (saveName.Trim() != saveName || saveName.EndsWith(".", StringComparison.Ordinal) || saveName.EndsWith(" ", StringComparison.Ordinal)) return false;
+        if (saveName.IndexOfAny(InvalidSaveNameCharacters) >= 0) return false;
+        return saveName.All(character => !char.IsControl(character));
     }
 
     private string RunJson()
