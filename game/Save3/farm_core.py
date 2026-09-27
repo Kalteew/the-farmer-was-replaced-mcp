@@ -7,6 +7,7 @@ if size < 7:
 cactus_mode = False
 pumpkin_mature_passes = 0
 maze_cooldown = 0
+hay_buffer_ready = False
 hay_column = size - 5
 hay_floor = 5000
 wood_floor = 5000
@@ -53,10 +54,10 @@ def maintain_carrot():
 
 def maintain_hay():
     while True:
-        entity = get_entity_type()
-        if entity != Entities.Grass:
+        if get_entity_type() != Entities.Grass:
             return
-        if harvest():
+        if can_harvest():
+            harvest()
             return
         pass
 
@@ -114,7 +115,24 @@ def farm_hay_segment(column, start_y, count):
         if step < count - 1:
             move(North)
 
+def prepare_hay_buffer():
+    global hay_buffer_ready
+    if hay_buffer_ready:
+        return
+    go_to(hay_column, 0)
+    for row in range(size):
+        if get_entity_type() != Entities.Grass:
+            harvest()
+            if get_entity_type() == None:
+                if get_ground_type() == Grounds.Soil:
+                    till()
+                if get_entity_type() == None:
+                    plant(Entities.Grass)
+        move(North)
+    hay_buffer_ready = True
+
 def run_hay_cycle():
+    prepare_hay_buffer()
     workers = []
     worker_count = max_drones() - 1
     if worker_count < 0:
@@ -197,7 +215,11 @@ def spawn_carrot_workers(start_y):
         worker_count = 0
     if worker_count > size - 1:
         worker_count = size - 1
-    for column in range(worker_count):
+    for column in range(size):
+        if column == hay_column:
+            continue
+        if len(workers) >= worker_count:
+            break
         worker = spawn_drone(farm_carrot_column, column, start_y)
         if worker == None:
             break
@@ -463,11 +485,13 @@ def cactus_inputs_missing():
 def run_carrot_cycle():
     workers = spawn_carrot_workers(0)
     delegated_columns = len(workers)
+    if hay_column < delegated_columns:
+        delegated_columns = delegated_columns + 1
     for column in range(size):
         for row in range(size):
             x = get_pos_x()
             y = get_pos_y()
-            delegated = x < delegated_columns
+            delegated = x < delegated_columns and x != hay_column
             if not delegated:
                 if x == hay_column:
                     maintain_hay()
@@ -485,6 +509,8 @@ def run_pumpkin_cycle():
     global pumpkin_mature_passes
     workers = spawn_carrot_workers(6)
     delegated_columns = len(workers)
+    if hay_column < delegated_columns:
+        delegated_columns = delegated_columns + 1
     pumpkin_ready = True
     pumpkin_count = 0
 
@@ -492,7 +518,7 @@ def run_pumpkin_cycle():
         for row in range(size):
             x = get_pos_x()
             y = get_pos_y()
-            delegated = x < delegated_columns and y >= 6
+            delegated = x < delegated_columns and x != hay_column and y >= 6
             pumpkin_plot = x < pumpkin_side and y < pumpkin_side
             if delegated:
                 pass
@@ -537,6 +563,10 @@ def run_pumpkin_cycle():
     wait_workers(workers)
     if pumpkin_ready:
         maybe_run_maze()
+
+
+
+
 
 
 
