@@ -294,8 +294,8 @@ async function runGame(requestedSave) {
 
   await refreshScripts(save.name).catch(() => {});
 
-  // Arrêter puis relancer via le pont évite de dépendre du focus de la fenêtre
-  // de code et garantit que l'AFK repart avec le script courant.
+  // Stopping and restarting through the bridge avoids relying on the code window's
+  // focus and ensures AFK resumes with the current script.
   await bridgeFetch("stop").catch(() => {});
   await sleep(150);
   try {

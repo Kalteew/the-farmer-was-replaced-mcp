@@ -1,17 +1,22 @@
 # MCP — The Farmer Was Replaced
 
-Pont local entre un client MCP et le jeu, avec lecture directe de l'état via BepInEx.
+[![English](https://img.shields.io/badge/Language-English-blue)](README.md)
+[![Français](https://img.shields.io/badge/Language-Français-green)](README.fr.md)
 
-Projet public : https://github.com/Kalteew/the-farmer-was-replaced-mcp
+---
 
-Le serveur est enregistré dans la configuration Codex sous `the_farmer_was_replaced`.
-Après un redémarrage de Codex, ses outils `tfwr_*` seront disponibles.
+Local bridge between an MCP client and the game, with direct access to game state through BepInEx.
 
-Le dossier `bridge/TFWRBridge/` contient le plugin BepInEx. Il expose une API locale en lecture directe du jeu, sur `127.0.0.1:17342`.
+Public project: https://github.com/Kalteew/the-farmer-was-replaced-mcp
 
-## Règle d'extension
+The server is registered in the Codex configuration as `the_farmer_was_replaced`.
+After restarting Codex, its `tfwr_*` tools will be available.
 
-Chaque problème rencontré pendant une partie doit devenir une méthode MCP réutilisable : chargement de sauvegarde, exécution directe, lecture d'état, actions, documentation, recettes, etc. Les fallbacks clavier ou écran restent des secours, pas le fonctionnement principal.
+The `bridge/TFWRBridge/` directory contains the BepInEx plugin. It exposes a local API that reads the game state directly at `127.0.0.1:17342`.
+
+## Extension rule
+
+Whenever an issue is encountered while playing, turn it into a reusable MCP method where appropriate: loading saves, running scripts directly, reading state, performing actions, accessing documentation and recipes, etc. Keyboard or screen-based fallbacks are emergency options, not the primary workflow.
 
 ## Installation
 
@@ -19,23 +24,23 @@ Chaque problème rencontré pendant une partie doit devenir une méthode MCP ré
 npm install
 ```
 
-Prérequis : le jeu installé, Node.js 20+, le SDK .NET avec la cible .NET Framework 4.7.2, et [BepInEx 5.4.23.5](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.23.5). Le chemin Steam par défaut est détecté automatiquement ; sinon définir `TFWR_GAME_ROOT`.
+Requirements: the game installed, Node.js 20+, the .NET SDK with the .NET Framework 4.7.2 target, and [BepInEx 5.4.23.5](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.23.5). The default Steam path is detected automatically; otherwise, set `TFWR_GAME_ROOT`.
 
-Pour enregistrer le serveur dans Codex :
+To register the server in Codex:
 
 ```toml
 [mcp_servers.the_farmer_was_replaced]
 type = "stdio"
 command = "node"
-args = ["C:\\chemin\\the-farmer-was-replaced-mcp\\src\\server.mjs"]
+args = ["C:\\path\\to\\the-farmer-was-replaced-mcp\\src\\server.mjs"]
 startup_timeout_sec = 30
 ```
 
-Le serveur expose les outils `tfwr_*` et utilise la sauvegarde active indiquée par `options.txt`. Les scripts sont écrits dans le dossier `Saves/SaveN` et, si elle existe, dans la copie de travail `game/SaveN`; le File Watcher du jeu doit rester activé.
+The server exposes `tfwr_*` tools and uses the active save specified by `options.txt`. Scripts are written to the `Saves/SaveN` directory and, if it exists, to the `game/SaveN` working copy; the game's File Watcher must remain enabled.
 
-La documentation de référence locale est dans `docs/LOCAL_KNOWLEDGE.md`. Les sources embarquées du jeu sont archivées dans `docs/source_snapshot/`.
+The local reference documentation is in `docs/LOCAL_KNOWLEDGE.md`. A snapshot of the game's bundled sources is archived in `docs/source_snapshot/`.
 
-## Outils
+## Tools
 
 - `tfwr_get_state`, `tfwr_list_saves`, `tfwr_capture_screen`
 - `tfwr_bridge_health`, `tfwr_new_save`, `tfwr_load_save`, `tfwr_live_state`, `tfwr_live_inventory`
@@ -45,40 +50,40 @@ La documentation de référence locale est dans `docs/LOCAL_KNOWLEDGE.md`. Les s
 - `tfwr_get_output`, `tfwr_read_reference`
 - `tfwr_list_recipes`, `tfwr_recipe_tree`, `tfwr_add_recipe`
 
-`tfwr_write_script` crée une copie dans `.mcp-backups` avant d'écraser un fichier existant. Après la création d'un nouveau module, `tfwr_refresh_scripts` l'enregistre dans l'éditeur interne du jeu sans automatiser la souris. `tfwr_run` exécute directement le script via le pont BepInEx ; F5 reste un secours si le pont n'est pas disponible.
+`tfwr_write_script` creates a backup in `.mcp-backups` before overwriting an existing file. After a new module is created, `tfwr_refresh_scripts` registers it in the game's internal editor without automating the mouse. `tfwr_run` executes the script directly through the BepInEx bridge; F5 is a fallback if the bridge is unavailable.
 
-`tfwr_measure_run` exécute une passe bornée et retourne les variations d'inventaire, la productivité par minute, les positions visitées, la couverture de grille, les changements de position et les wraps détectés sur les deux axes.
+`tfwr_measure_run` executes a bounded pass and returns inventory changes, productivity per minute, visited positions, grid coverage, position changes, and wraps detected on both axes.
 
-### Actions en jeu
+### In-game actions
 
-- `tfwr_new_save` crée et charge une nouvelle sauvegarde via le menu interne du jeu.
-- `tfwr_unlock` achète ou améliore un déblocage par son nom (`Loops` ou `Unlocks.Loops`).
-- `tfwr_stop` arrête directement le script actif via le pont, avec repli sur Maj+F5.
-- `tfwr_save` envoie Ctrl+S à la fenêtre du jeu.
+- `tfwr_new_save` creates and loads a new save through the game's internal menu.
+- `tfwr_unlock` purchases or upgrades an unlock by name (`Loops` or `Unlocks.Loops`).
+- `tfwr_stop` directly stops the active script through the bridge, falling back to Shift+F5.
+- `tfwr_save` sends Ctrl+S to the game window.
 
-Pour une action de progression, lire d'abord `tfwr_live_unlocks` et l'état réel du jeu, puis utiliser `tfwr_unlock`. Les coûts restent calculés par le jeu.
+Before taking a progression action, first read `tfwr_live_unlocks` and the game's current state, then use `tfwr_unlock`. Costs are calculated by the game.
 
-Les déplacements de la ferme sont toriques : dépasser un bord fait réapparaître le drone sur le bord opposé, horizontalement comme verticalement. Un balayage fiable doit donc utiliser exactement `get_world_size()` déplacements par axe, sans mouvements de correction aux bords.
+Farm movement is toroidal: crossing an edge wraps the drone to the opposite edge, horizontally and vertically. A reliable sweep should therefore use exactly `get_world_size()` moves per axis, without corrective moves at the edges.
 
-`tfwr_get_state` lit le JSON de sauvegarde (déblocages, inventaire sérialisé, terrain et entités quand le jeu les a enregistrés). `tfwr_capture_screen` fournit en plus une image de l'interface réelle. Les recettes et coûts documentés sont une base locale : les coûts dynamiques du jeu devront être confirmés avec `get_cost()` avant une action importante.
+`tfwr_get_state` reads the save JSON (unlocks, serialized inventory, terrain, and entities when saved by the game). `tfwr_capture_screen` also provides an image of the live interface. Documented recipes and costs are a local reference; confirm dynamic in-game costs with `get_cost()` before important actions.
 
-## Pont BepInEx
+## BepInEx bridge
 
-Le projet du plugin se compile avec :
+Build the plugin project with:
 
 ```powershell
 dotnet build bridge/TFWRBridge/TFWRBridge.csproj
 ```
 
-Après installation de BepInEx dans le dossier du jeu, installer le plugin avec :
+After installing BepInEx in the game directory, install the plugin with:
 
 ```powershell
 powershell -File tools/install-bepinex.ps1
 ```
 
-Le plugin expose l'API locale `http://127.0.0.1:17342` : état, inventaire, déblocages, catalogue, grille, chargement de sauvegarde et exécution de script.
+The plugin exposes the local API at `http://127.0.0.1:17342`: game state, inventory, unlocks, catalog, grid, save loading, and script execution.
 
-Pour un autre emplacement :
+For a different installation path:
 
 ```powershell
 $env:TFWR_GAME_ROOT = 'D:\\SteamLibrary\\steamapps\\common\\The Farmer Was Replaced'
@@ -86,17 +91,17 @@ dotnet build bridge/TFWRBridge/TFWRBridge.csproj /p:GameRoot="$env:TFWR_GAME_ROO
 powershell -File tools/install-bepinex.ps1
 ```
 
-## Test manuel
+## Manual testing
 
 ```powershell
 npm run inspect
 npm run mcp
 ```
 
-## Skills et suivi local
+## Skills and local tracking
 
-- `skills/tfwr-play/` : jouer via le pont MCP.
-- `skills/tfwr-research/` : approfondir les mécaniques sans modifier la sauvegarde.
-- `skills/tfwr-progress/` : maintenir l'état, la feuille de route et l'historique.
-- `progress/` : suivi permanent de la progression dans le jeu.
-- `docs/LOCAL_KNOWLEDGE.md` : base de connaissances consolidée.
+- `skills/tfwr-play/`: play through the MCP bridge.
+- `skills/tfwr-research/`: investigate mechanics without modifying the save.
+- `skills/tfwr-progress/`: maintain game state, the roadmap, and history.
+- `progress/`: ongoing game progress tracking.
+- `docs/LOCAL_KNOWLEDGE.md`: consolidated knowledge base.

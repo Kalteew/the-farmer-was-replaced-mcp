@@ -1,4 +1,4 @@
-# Ferme AFK compacte : carottes, citrouilles, cactus, labyrinthes et dinosaures.
+# Compact AFK farm: carrots, pumpkins, cacti, mazes, and dinosaurs.
 size = get_world_size()
 pumpkin_side = 6
 if size < 7:
